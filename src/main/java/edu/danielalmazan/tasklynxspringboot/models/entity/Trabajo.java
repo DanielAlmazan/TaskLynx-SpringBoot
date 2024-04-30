@@ -1,6 +1,8 @@
 package edu.danielalmazan.tasklynxspringboot.models.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,15 +11,22 @@ import java.time.LocalDate;
 @Table(name = "trabajo")
 public class Trabajo {
     @Id
+    @NotEmpty(message = "El código del trabajo no puede estar vacío")
+    @Size(max = 5, message = "El tamaño máximo es 5")
     @Column(name = "cod_trabajo", nullable = false, length = 5)
     private String codTrabajo;
 
+    @NotEmpty(message = "La categoría no puede estar vacía")
+    @Size(max = 5, message = "El tamaño máximo es 50")
     @Column(name = "categoria", nullable = false, length = 50)
     private String categoria;
 
+    @NotEmpty(message = "La descripción no puede estar vacía")
+    @Size(max = 5, message = "El tamaño máximo es 500")
     @Column(name = "descripcion", nullable = false, length = 500)
     private String descripcion;
 
+    @NotEmpty(message = "La fecha de inicio no puede estar vacía")
     @Column(name = "fec_ini", nullable = false)
     private LocalDate fecIni;
 
@@ -31,6 +40,7 @@ public class Trabajo {
     @JoinColumn(name = "id_trabajador")
     private Trabajador idTrabajador;
 
+    @NotEmpty(message = "La prioridad no puede estar vacía")
     @Column(name = "prioridad", nullable = false, precision = 1)
     private BigDecimal prioridad;
 
@@ -97,5 +107,4 @@ public class Trabajo {
     public void setPrioridad(BigDecimal prioridad) {
         this.prioridad = prioridad;
     }
-
 }
