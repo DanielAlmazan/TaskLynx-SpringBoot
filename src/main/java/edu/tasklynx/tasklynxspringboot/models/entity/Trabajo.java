@@ -1,4 +1,4 @@
-package edu.danielalmazan.tasklynxspringboot.models.entity;
+package edu.tasklynx.tasklynxspringboot.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

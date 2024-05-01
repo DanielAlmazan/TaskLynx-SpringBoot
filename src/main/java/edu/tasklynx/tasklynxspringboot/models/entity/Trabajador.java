@@ -1,6 +1,7 @@
-package edu.danielalmazan.tasklynxspringboot.models.entity;
+package edu.tasklynx.tasklynxspringboot.models.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,9 +10,11 @@ import java.util.Set;
 @Table(name = "trabajador")
 public class Trabajador {
     @Id
+    @NotEmpty(message = "no puede estar vacío")
     @Column(name = "id_trabajador", nullable = false, length = 5)
     private String idTrabajador;
 
+    @NotEmpty(message = "no puede estar vacío")
     @Column(name = "dni", nullable = false, length = 9)
     private String dni;
 
@@ -21,9 +24,11 @@ public class Trabajador {
     @Column(name = "apellidos", nullable = false, length = 100)
     private String apellidos;
 
+    @NotEmpty(message = "no puede estar vacío")
     @Column(name = "especialidad", nullable = false, length = 50)
     private String especialidad;
 
+    @NotEmpty(message = "no puede estar vacío")
     @Column(name = "\"contraseña\"", nullable = false, length = 50)
     private String contraseña;
 
