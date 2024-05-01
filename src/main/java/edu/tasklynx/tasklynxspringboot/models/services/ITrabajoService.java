@@ -1,6 +1,6 @@
-package edu.danielalmazan.tasklynxspringboot.models.services;
+package edu.tasklynx.tasklynxspringboot.models.services;
 
-import edu.danielalmazan.tasklynxspringboot.models.entity.Trabajo;
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 
 import java.util.List;
 

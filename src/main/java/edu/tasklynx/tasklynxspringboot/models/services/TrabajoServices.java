@@ -1,7 +1,7 @@
-package edu.danielalmazan.tasklynxspringboot.models.services;
+package edu.tasklynx.tasklynxspringboot.models.services;
 
-import edu.danielalmazan.tasklynxspringboot.models.dao.ITrabajoDAO;
-import edu.danielalmazan.tasklynxspringboot.models.entity.Trabajo;
+import edu.tasklynx.tasklynxspringboot.models.dao.ITrabajoDAO;
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
