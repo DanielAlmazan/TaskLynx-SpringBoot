@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1 th:text="${titulo}"></h1>
+
+    <table th:if="${not trabajadores.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Dni</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Especialidad</th>
+                <th>Email</th>
+                <th>Trabajos asociados</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="trabajador: ${trabajadores}">
+                <td><a th:text="${trabajador.idTrabajador}" th:href="@{/trabajadores/{idTrabajador}(idTrabajador=${trabajador.idTrabajador})}"></a></td>
+                <td th:text="${trabajador.dni}"></td>
+                <td th:text="${trabajador.nombre}"></td>
+                <td th:text="${trabajador.apellidos}"></td>
+                <td th:text="${trabajador.especialidad}"></td>
+                <td th:text="${trabajador.email}"></td>
+                <td>
+                    <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
+                    <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
+                    <span th:text="${trabajo.getCodTrabajo()}"></span>
+                    <span th:if="${!iterStat.last}">, </span>
+                    </span>
+                </td>
+                <td>
+                    <form th:action="@{/trabajadores/delete}" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+                        <input type="submit" value="Eliminar">
+                    </form>
+                    <form th:action="@{/trabajadores/editar}" method="get">
+                        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+                        <input type="submit" value="Editar">
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+<p><a th:href="@{/trabajadores}">Volver</a></p>
+
+</body>
+</html>

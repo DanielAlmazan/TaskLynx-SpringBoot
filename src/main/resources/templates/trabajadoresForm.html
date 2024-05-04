@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+
+    <form th:action="@{/trabajadores/update}" th:object="${trabajador}" method="post">
+        <input type="hidden" name="_method" th:value="${trabajador.idTrabajador != null ? 'put' : 'post'}" />
+        <div class="errorblock" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err: ${#fields.errors('*')}"
+                th:text="${err}"> El campo no es válido</li>
+            </ul>
+        </div>
+
+        <fieldset>
+            <legend>Datos del trabajador</legend>
+
+            <p th:text="${trabajador.idTrabajador}"></p>
+
+            <table>
+                <tr>
+                    <td><label th:text="${id}">ID: </label></td>
+                    <td><input type="text" th:field="*{idTrabajador}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${dni}">DNI: </label></td>
+                    <td><input type="text" th:field="*{dni}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${nombre}">Nombre: </label></td>
+                    <td><input type="text" th:field="*{nombre}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${apellidos}">Apellidos: </label></td>
+                    <td><input type="text" th:field="*{apellidos}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${especialidad}">Especialidad: </label></td>
+                    <td><input type="text" th:field="*{especialidad}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${contraseña}">Contraseña: </label></td>
+                    <td><input type="text" th:field="*{contraseña}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><label th:text="${email}">Email: </label></td>
+                    <td><input type="text" th:field="*{email}" maxlength="100"></td>
+                </tr>
+
+                <tr>
+                    <td><button type="submit" th:text="${trabajador.idTrabajador} != null ? 'Editar' : 'Añadir'"></button></td>
+                </tr>
+
+            </table>
+
+
+        </fieldset>
+    </form>
+
+    <p><a th:href="@{/trabajadores}">Volver</a></p>
+
+    </body>
+</html>

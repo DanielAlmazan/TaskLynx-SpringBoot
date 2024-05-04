@@ -1,7 +1,10 @@
 package edu.tasklynx.tasklynxspringboot.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -10,32 +13,41 @@ import java.util.Set;
 @Table(name = "trabajador")
 public class Trabajador {
     @Id
-    @NotEmpty(message = "no puede estar vacío")
-    @Column(name = "id_trabajador", nullable = false, length = 5)
+    @NotEmpty(message = "El campo Id no puede estar vacío")
+    @Size(max = 5, message = "El tamaño máximo del ID es 5")
+    @Column(name = "id_trabajador", nullable = false, length = 5, unique = true)
     private String idTrabajador;
 
-    @NotEmpty(message = "no puede estar vacío")
+    @NotEmpty(message = "El campo DNI no puede estar vacío")
+    @Size(max = 9, message = "El tamaño máximo del DNI es 9")
     @Column(name = "dni", nullable = false, length = 9)
     private String dni;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", length = 100)
+    @Size(max = 100, message = "El tamaño máximo del nombre es 100")
     private String nombre;
 
-    @Column(name = "apellidos", nullable = false, length = 100)
+    @Column(name = "apellidos", length = 100)
+    @Size(max = 100, message = "El tamaño máximo de los apellidos es 100")
     private String apellidos;
 
-    @NotEmpty(message = "no puede estar vacío")
+    @NotEmpty(message = "El campo especialidad no puede estar vacío")
+    @Size(max = 50, message = "El tamaño máximo de la especialidad es 50")
     @Column(name = "especialidad", nullable = false, length = 50)
     private String especialidad;
 
-    @NotEmpty(message = "no puede estar vacío")
+    @NotEmpty(message = "El campo contraseña no puede estar vacío")
+    @Size(max = 50, message = "El tamaño máximo de la contraseña es 50")
     @Column(name = "\"contraseña\"", nullable = false, length = 50)
     private String contraseña;
 
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(name = "email", length = 150)
+    @Email(message = "El email no es válido")
+    @Size(max = 150, message = "El tamaño máximo del email es 150")
     private String email;
 
     @OneToMany(mappedBy = "idTrabajador")
+    @JsonManagedReference
     private Set<Trabajo> trabajos = new LinkedHashSet<>();
 
     public Trabajador() {
