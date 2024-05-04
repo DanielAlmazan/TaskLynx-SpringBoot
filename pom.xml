@@ -8,7 +8,7 @@
         <version>3.2.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>edu.danielalmazan</groupId>
+    <groupId>edu.tasklynx</groupId>
     <artifactId>TaskLynx-SpringBoot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>TaskLynx-SpringBoot</name>

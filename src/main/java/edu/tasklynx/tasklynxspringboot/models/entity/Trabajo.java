@@ -1,5 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -37,6 +38,7 @@ public class Trabajo {
     private BigDecimal tiempo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "id_trabajador")
     private Trabajador idTrabajador;
 

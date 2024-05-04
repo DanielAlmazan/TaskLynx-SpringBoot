@@ -4,7 +4,7 @@ import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.services.ITrabajadorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @CrossOrigin (origins = {"*"})
 @RestController
@@ -141,7 +140,7 @@ public class TrabajadoresController {
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors()
                     .stream()
-                    .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
 
             response.put("errors", errors);

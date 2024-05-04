@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+
+    <h3>ID: </h3>
+    <p th:text="${trabajador.idTrabajador}"></p>
+
+    <h3>DNI: </h3>
+    <p th:text="${trabajador.dni}"></p>
+
+    <h3>Nombre: </h3>
+    <p th:text="${trabajador.nombre}"></p>
+
+    <h3>Apellidos: </h3>
+    <p th:text="${trabajador.apellidos}"></p>
+
+    <h3>Especialidad: </h3>
+    <p th:text="${trabajador.especialidad}"></p>
+
+    <h3>Email:</h3>
+    <p th:text="${trabajador.email}"></p>
+
+    <h3>Trabajos asociados:</h3>
+    <p th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</p>
+    <table th:if="${!#lists.isEmpty(trabajador.trabajos)}">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Fecha de inicio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="trabajo : ${trabajador.trabajos}">
+                <td th:text="${trabajo.codTrabajo}"></td>
+                <td th:text="${trabajo.descripcion}"></td>
+                <td th:text="${trabajo.fecIni}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/api/trabajadores/{idTrabajador}/eliminar(idTrabajador=${trabajador.idTrabajador})}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Eliminar trabajador">
+    </form>
+
+    <p><a th:href="@{/trabajadores}">Volver</a></p>
+
+</body>
+</html>
