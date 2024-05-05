@@ -45,12 +45,17 @@
         </tbody>
     </table>
 
+    <form th:action="@{/trabajadores/editar}" method="get">
+        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+        <input type="submit" value="Editar trabajador">
+    </form>
+
     <form th:action="@{/api/trabajadores/{idTrabajador}/eliminar(idTrabajador=${trabajador.idTrabajador})}" method="post">
         <input type="hidden" name="_method" value="delete">
         <input type="submit" value="Eliminar trabajador">
     </form>
 
-    <p><a th:href="@{/trabajadores}">Volver</a></p>
+    <p><a th:href="@{/trabajadores/listar}">Volver</a></p>
 
 </body>
 </html>

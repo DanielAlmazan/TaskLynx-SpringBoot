@@ -15,8 +15,6 @@ public class TaskLynxSpringBootApplication {
 
     @Bean
     HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        FilterRegistrationBean<HiddenHttpMethodFilter> filterRegistrationBean = new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
-        filterRegistrationBean.addUrlPatterns("/*");
         return new HiddenHttpMethodFilter();
     }
 }
