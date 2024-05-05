@@ -37,14 +37,14 @@
                     </span>
                 </td>
                 <td>
+                    <form th:action="@{/trabajadores/editar}" method="get">
+                        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+                        <input type="submit" value="Editar">
+                    </form>
                     <form th:action="@{/trabajadores/delete}" method="post">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
                         <input type="submit" value="Eliminar">
-                    </form>
-                    <form th:action="@{/trabajadores/editar}" method="get">
-                        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
-                        <input type="submit" value="Editar">
                     </form>
                 </td>
             </tr>
