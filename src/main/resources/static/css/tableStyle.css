@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+/* Margin for the top of the questions */
+ol>li {
+    margin: 0 0 5rem 0;
+    &::marker {
+        font-size: 1.2rem;
+        font-weight: 780;
+    }
+}
+
+/* Margin and padding for cells */
+td, th {
+    margin: .5rem;
+    padding: .5rem;
+}
+
+thead {
+    text-align: center;
+    background-color: #d9d9d91a;
+}
+
+/* Background color for even columns */
+tbody tr:nth-child(even) {
+    background-color: #d9d9d91a;
+}
+
+/* Radius for first cells of the tables */
+tbody>tr:first-child>td {
+    border-radius: 1rem 1rem 0 0;
+}
+
+/* Radius for last cells of the tables */
+tbody>tr:last-child>td {
+    border-radius: 0 0 1rem 1rem;
+}
+
+tfoot>td {
+    background-color: #8585d0;
+    border-radius: 0 0 1rem 1rem;
+}
