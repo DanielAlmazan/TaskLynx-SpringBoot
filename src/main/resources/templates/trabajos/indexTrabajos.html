@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+
+    <ul>
+        <li><a th:href="@{/trabajos/nuevo}">Añadir</a></li>
+    </ul>
+
+    <p th:if="${trabajos.isEmpty()}">No hay trabajos que mostrar</p>
+
+    <table th:if="${not trabajos.isEmpty()}">
+        <thead>
+            <th>ID</th>
+            <th>Categoria</th>
+            <th>Descripción</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de fin</th>
+            <th>Tiempo</th>
+            <th>Prioridad</th>
+            <th>Trabajador</th>
+            <th>Opciones</th>
+        </thead>
+        <tbody>
+            <tr th:each="trabajo: ${trabajos}">
+                <td th:text="${trabajo.codTrabajo}"></td>
+                <td th:text="${trabajo.categoria}"></td>
+                <td th:text="${trabajo.descripcion}"></td>
+                <td th:text="${trabajo.fecIni}"></td>
+                <td th:text="${trabajo.fecFin}"></td>
+                <td th:text="${trabajo.tiempo}"></td>
+                <td th:text="${trabajo.prioridad}"></td>
+                <td>
+                    <a th:href="@{/trabajadores/{id} (id = ${trabajo.idTrabajador.idTrabajador})}"
+                       th:text="${trabajo.idTrabajador.nombre}"></a>
+                </td>
+                <td>
+                    <form th:action="@{/trabajo/editar}" method="get">
+                        <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
+                        <input type="submit" value="Editar">
+                    </form>
+                    <form th:action="@{/trabajo/delete}" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
+                        <input type="submit" value="Eliminar">
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/}">Volver</a></p>
+</body>
+</html>
