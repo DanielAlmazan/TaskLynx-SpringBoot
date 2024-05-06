@@ -21,15 +21,8 @@ public class TrabajadoresViewController {
     @GetMapping("")
     public String indexTrabajadores(Model model) {
         model.addAttribute("titulo", "Trabajadores");
-        return "trabajadores/indexTrabajadores";
-    }
-
-    // Lista todos los trabajadores
-    @GetMapping("/listar")
-    public String listarTrabajadores(Model model) {
-        model.addAttribute("titulo", "Listado de trabajadores");
         model.addAttribute("trabajadores", trabajadorServices.findAll());
-        return "trabajadores/trabajadoresListar";
+        return "trabajadores/indexTrabajadores";
     }
 
     // Muestra los detalles de un trabajador

@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+#active {
+    background-color: #91a1929d;
+    border-radius: .5rem;
+}
+
+.errorMessage {
+    color: #fe7878;
+    font-weight: bolder;
+}
+
+form {
+    display: inline-block;
+    width: 100%;
+}
+
+#title, #title>h2 {
+    display: inline;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+button {
+    width: 98%;
+    padding: .5rem;
+    border: .1rem solid #80e3ff3f;
+    border-radius: .5rem;
+    &:not(.deleteButton):not(.modifyButton) {
+        background-color: #16161a;
+        color: #80e4ff;
+    }
+    font-family: 'Courier New', 'Courier', 'monospace';
+    font-size: 1rem;
+    box-shadow: 0 .25rem .2rem #050506;
+    transition: all .2s ease-in-out;
+    &:focus, &[type="submit"]:hover {
+        outline: none;
+        transition: all .2s ease-in-out;
+        &:not(.deleteButton):not(.modifyButton) {
+            box-shadow: 0 .5rem .6rem #050506;
+            border-color: #80e3ff89;
+            background-color: #1e1e24;
+        }
+    }
+}
+
+fieldset {
+    border-radius: .5rem;
+}
+
+button {
+    margin: 1rem 0;
+}
+
+.errorList {
+    margin-top: 1rem;
+    background-color: #1e1e24;
+    border-radius: .5rem;
+    border: .1rem solid #fe7878;
+    color: #fe7878;
+    padding: 1rem;
+}
+
+.goodValues {
+    margin-top: 1rem;
+    background-color: #1e1e24;
+    border-radius: .5rem;
+    border: .1rem solid #80e3ff3f;
+    color: #80ffd9;
+    padding: 1rem;
+}
+
+.deleteButton {
+    background-color: #dc4c4c;
+    color: #ffffff;
+    &:hover, &:focus {
+        color: #ffffff;
+        box-shadow: 0 .05rem .5rem #bb8181;
+    }
+}
+
+.modifyButton {
+    background-color: #d99e14;
+    color: #ffffff;
+    &:hover, &:focus {
+        color: #ffffff;
+        box-shadow: 0 .05rem .5rem #b0934d;
+    }
+}
+
+#newClientForm {
+    & input[type="text"] {
+        width: fit-content;
+    }
+    display: inline;
+}
