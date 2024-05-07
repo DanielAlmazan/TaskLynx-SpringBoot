@@ -1,7 +1,9 @@
 package edu.tasklynx.tasklynxspringboot.controllers;
 
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 import edu.tasklynx.tasklynxspringboot.models.services.ITrabajadorService;
+import edu.tasklynx.tasklynxspringboot.models.services.ITrabajoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -15,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin (origins = {"*"})
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("/api")
 public class TrabajadoresController {
-
     @Autowired
     private ITrabajadorService trabajadorService;
+    @Autowired
+    private ITrabajoService trabajoService;
 
     @GetMapping("/trabajadores")
     public ResponseEntity<?> indexAll() {
@@ -62,6 +65,89 @@ public class TrabajadoresController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trabajador, HttpStatus.OK);
+    }
+
+    @GetMapping("/trabajadores/{nombre}/{contraseña}")
+    public ResponseEntity<?> indexOneByUsuarioAndContraseña(@PathVariable String nombre, @PathVariable String contraseña) {
+        Trabajador trabajador;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajador = trabajadorService.findByNameAndPass(nombre, contraseña);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajador == null) {
+            response.put("mensaje", "El trabajador con usuario: ".concat(nombre).concat(" y contraseña: ").concat(contraseña).concat(" no existe en la base de datos"));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(trabajador, HttpStatus.OK);
+    }
+
+    @GetMapping("/trabajadores/{id}/trabajos")
+    public ResponseEntity<?> indexOneTrabajos(@PathVariable String id) {
+        List<Trabajo> trabajos;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajos = trabajadorService.findById(id).getTrabajos().stream().toList();
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajos.isEmpty()) {
+            response.put("mensaje", "No existen trabajos para el trabajador con ID: ".concat(id));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajos, HttpStatus.OK);
+    }
+
+    @GetMapping("/trabajadores/{id}/trabajos/pendientes")
+    public ResponseEntity<?> indexOneTrabajosPendientes(@PathVariable String id) {
+        List<Trabajo> trabajosCompletados;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajosCompletados = trabajoService.findPendientesPorTrabajador(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajosCompletados.isEmpty()) {
+            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: ".concat(id));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+    }
+
+    @GetMapping("/trabajadores/{id}/trabajos/completados")
+    public ResponseEntity<?> indexOneTrabajosCompletados(@PathVariable String id) {
+        List<Trabajo> trabajosCompletados;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajosCompletados = trabajoService.findCompletadosPorTrabajador(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajosCompletados.isEmpty()) {
+            response.put("mensaje", "No existen trabajos completados para el trabajador con ID: ".concat(id));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
     }
 
     @PostMapping("/trabajadores")
