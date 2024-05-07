@@ -9,9 +9,9 @@
 <body>
   <h1 th:text="${titulo}"></h1>
 
-  <form th:action="@{/trabajadores/edit}" th:object="${trabajador}" method="post">
-    <input type="hidden" name="_method" value="put"/>
-
+<form th:action="@{/trabajadores/edit}" th:object="${trabajador}" method="post">
+  <input type="hidden" name="_method" value="put"/>
+  
     <div class="errorblock" th:if="${#fields.hasErrors('*')}">
       <h2 th:text="${error}"></h2>
       <ul>
@@ -48,9 +48,7 @@
       <label th:text="${email}"></label>
       <input type="text" th:field="*{email}" maxlength="150">
 
-          <button type="submit" th:text="Editar"></button>
-
-
+      <button type="submit" th:text="Editar"></button>
 
     </fieldset>
   </form>

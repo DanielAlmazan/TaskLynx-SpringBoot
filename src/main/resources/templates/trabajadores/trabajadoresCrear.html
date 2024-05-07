@@ -10,7 +10,7 @@
     <h1 th:text="${titulo}"></h1>
 
     <form th:action="@{/trabajadores/create}" th:object="${trabajador}" method="post">
-
+      
         <div class="errorblock" th:if="${#fields.hasErrors('*')}">
             <h2 th:text="${error}"></h2>
             <ul>
@@ -25,7 +25,7 @@
 
         <fieldset>
             <legend>Datos del trabajador</legend>
-
+          
                 <label th:text="${id}"></label>
                 <input type="text" th:field="*{idTrabajador}" maxlength="5">
 
