@@ -32,19 +32,26 @@
                 <td th:text="${trabajo.categoria}"></td>
                 <td th:text="${trabajo.descripcion}"></td>
                 <td th:text="${trabajo.fecIni}"></td>
-                <td th:text="${trabajo.fecFin}"></td>
-                <td th:text="${trabajo.tiempo}"></td>
-                <td th:text="${trabajo.prioridad}"></td>
                 <td>
-                    <a th:href="@{/trabajadores/{id} (id = ${trabajo.idTrabajador.idTrabajador})}"
-                       th:text="${trabajo.idTrabajador.nombre}"></a>
+                    <span th:if="${trabajo.fecFin}" th:text="${trabajo.fecFin}"></span>
+                    <span th:if="${trabajo.fecFin == null}">-</span>
                 </td>
                 <td>
-                    <form th:action="@{/trabajo/editar}" method="get">
+                    <span th:if="${trabajo.tiempo}" th:text="${trabajo.tiempo}"></span>
+                    <span th:if="${trabajo.tiempo == null}">-</span>
+                </td>
+                <td th:text="${trabajo.prioridad}"></td>
+                <td>
+                    <a th:if="${trabajo.idTrabajador}" th:href="@{/trabajadores/{id} (id = ${trabajo.idTrabajador.idTrabajador})}"
+                       th:text="${trabajo.idTrabajador.nombre}"></a>
+                    <span th:if="${trabajo.idTrabajador == null}">-</span>
+                </td>
+                <td>
+                    <form th:action="@{/trabajos/editar}" method="get">
                         <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
                         <input type="submit" value="Editar">
                     </form>
-                    <form th:action="@{/trabajo/delete}" method="post">
+                    <form th:action="@{/trabajos/delete}" method="post">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
                         <input type="submit" value="Eliminar">
