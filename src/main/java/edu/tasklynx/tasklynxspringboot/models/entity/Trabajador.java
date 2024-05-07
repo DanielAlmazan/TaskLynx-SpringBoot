@@ -11,6 +11,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "trabajador")
+@NamedQueries({
+        @NamedQuery(name = "Trabajador.findByNameAndPass", 
+                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña")
+})
 public class Trabajador {
     @Id
     @NotEmpty(message = "El campo Id no puede estar vacío")

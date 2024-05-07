@@ -1,0 +1,30 @@
+# File for testing the API 
+
+# Variables
+@token = 
+
+###
+
+GET http://localhost:8080/api/trabajos/
+
+###
+
+# Crear un trabajo
+
+POST http://localhost:8080/api/trabajadores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idTrabajador": "",
+  "dni": "",
+  "nombre": "",
+  "apellidos": "",
+  "especialidad": "",
+  "contraseña": "",
+  "email": "",
+  "trabajos": []
+}
+
+###
+

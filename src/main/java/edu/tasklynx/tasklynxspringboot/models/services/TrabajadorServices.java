@@ -24,7 +24,13 @@ public class TrabajadorServices implements ITrabajadorService {
     public Trabajador findById(String id) {
         return trabajadorDAO.findById(id).orElse(null);
     }
-
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Trabajador findByNameAndPass(String user, String pass) {
+        return trabajadorDAO.findByNameAndPass(user, pass);
+    }
+    
     @Override
     @Transactional
     public Trabajador save(Trabajador trabajador) {

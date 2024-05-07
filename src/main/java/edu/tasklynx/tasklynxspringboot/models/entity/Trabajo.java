@@ -10,6 +10,16 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "trabajo")
+@NamedQueries({
+        @NamedQuery(name = "Trabajo.findCompletaByTrabajador",
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NOT NULL"),
+        @NamedQuery(name = "Trabajo.findPendienteByTrabajador",
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL"),
+        @NamedQuery(name = "Trabajo.findByIdAndUnassigned",
+                query = "SELECT t FROM Trabajo t WHERE t.codTrabajo = :codTrabajo AND t.idTrabajador IS NULL"),
+        @NamedQuery(name = "Trabajo.findCompletadosPorTrabajadorEntreFechas",
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin BETWEEN :startDate AND :endDate"),
+})
 public class Trabajo {
     @Id
     @NotEmpty(message = "El código del trabajo no puede estar vacío")
