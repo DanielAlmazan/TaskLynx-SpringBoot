@@ -39,11 +39,6 @@ public class TrabajadoresController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajadores.isEmpty()) {
-            response.put("mensaje", "No existen trabajadores en la base de datos");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(trabajadores, HttpStatus.OK);
     }
 
