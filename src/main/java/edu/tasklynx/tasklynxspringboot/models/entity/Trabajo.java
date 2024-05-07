@@ -2,8 +2,7 @@ package edu.tasklynx.tasklynxspringboot.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,16 +27,16 @@ public class Trabajo {
     private String codTrabajo;
 
     @NotEmpty(message = "La categoría no puede estar vacía")
-    @Size(max = 5, message = "El tamaño máximo es 50")
+    @Size(max = 50, message = "El tamaño máximo es 50")
     @Column(name = "categoria", nullable = false, length = 50)
     private String categoria;
 
     @NotEmpty(message = "La descripción no puede estar vacía")
-    @Size(max = 5, message = "El tamaño máximo es 500")
+    @Size(max = 500, message = "El tamaño máximo es 500")
     @Column(name = "descripcion", nullable = false, length = 500)
     private String descripcion;
 
-    @NotEmpty(message = "La fecha de inicio no puede estar vacía")
+    @NotNull(message = "La fecha de inicio no puede estar vacía")
     @Column(name = "fec_ini", nullable = false)
     private LocalDate fecIni;
 
@@ -52,7 +51,8 @@ public class Trabajo {
     @JoinColumn(name = "id_trabajador")
     private Trabajador idTrabajador;
 
-    @NotEmpty(message = "La prioridad no puede estar vacía")
+    @DecimalMin(value = "1", message = "La prioridad debe ser como mínimo 1")
+    @DecimalMax(value = "4", message = "La prioridad debe ser como máximo 4")
     @Column(name = "prioridad", nullable = false, precision = 1)
     private BigDecimal prioridad;
 

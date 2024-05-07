@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+
+    <form th:action="@{/trabajos/create}" th:object="${trabajo}" method="post">
+        <input type="hidden" name="_method" th:value="${trabajo.codTrabajo != null ? 'PUT' : 'POST'}" />
+        <div class="errorblock" th:if="${#fields.hasErrors('*')}">
+            <h2 th:text="${error}"></h2>
+            <ul>
+                <li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <div th:if="${mensajeError}">
+            <h2 th:text="${error}"></h2>
+            <p th:text="${mensajeError}"></p>
+        </div>
+
+        <fieldset>
+            <legend>Datos del trabajo</legend>
+
+            <label for="codTrabajo">Código del trabajo<span class="necesario"> *</span>:</label>
+            <input id="codTrabajo" type="text" th:field="*{codTrabajo}" maxlength="5">
+
+            <label for="categoria">Categoría<span class="necesario"> *</span>:</label>
+            <input id="categoria" type="text" th:field="*{categoria}" maxlength="50">
+
+            <label for="descripcion">Descripción<span class="necesario"> *</span>:</label>
+            <input id="descripcion" type="text" th:field="*{descripcion}" maxlength="500">
+
+            <label for="fecIni">Fecha de inicio<span class="necesario"> *</span>:</label></td>
+            <input id="fecIni" type="date" th:field="*{fecIni}">
+
+            <label for="idTrabajador">Trabajador asignado:</label>
+            <select id="idTrabajador" th:field="*{idTrabajador}">
+                <option value="">-- No asignado --</option>
+                <option th:each="trabajador: ${trabajadores}" th:value="${trabajador.idTrabajador}">
+                    <span th:text="${trabajador.nombre} + ' ' + ${trabajador.apellidos}"></span>
+                </option>
+            </select>
+
+            <label for="prioridad">Prioridad<span class="necesario"> *</span>:</label></td>
+            <select id="prioridad" th:field="*{prioridad}">
+                <option th:each="numero : ${#numbers.sequence(1,4)}" th:value="${numero}" th:text="${numero}"></option>
+            </select>
+
+            <button type="submit" th:text="${editar} ? 'Editar trabajo' : 'Crear trabajo'"></button>
+        </fieldset>
+    </form>
+
+    <p><a th:href="@{/trabajos}">Volver</a></p>
+
+</body>
+</html>
