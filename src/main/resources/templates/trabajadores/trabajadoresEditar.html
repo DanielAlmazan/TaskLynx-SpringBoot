@@ -10,7 +10,7 @@
 <h1 th:text="${titulo}"></h1>
 
 <form th:action="@{/trabajadores/edit}" th:object="${trabajador}" method="post">
-  <input type="hidden" name="_method" value="put" />
+  <input type="hidden" name="_method" value="put"/>
   <div class="errorblock" th:if="${#fields.hasErrors('*')}">
     <ul>
       <li th:each="err: ${#fields.errors('*')}"
@@ -26,7 +26,7 @@
     <table>
       <tr>
         <td><label th:text="${id}">ID: </label></td>
-        <td><input type="text" th:field="*{idTrabajador}" maxlength="100"></td>
+        <td><input type="text" th:field="*{idTrabajador}" maxlength="100" readonly></td>
       </tr>
 
       <tr>

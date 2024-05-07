@@ -87,7 +87,7 @@ public class TrabajadoresViewController {
     }
 
     // Edita un trabajador
-    @RequestMapping(value="/edit", method=RequestMethod.PUT)
+    @PutMapping(value="/edit")
     public ModelAndView edit(@Valid Trabajador trabajador, BindingResult result, Model mod) {
         ModelAndView model = new ModelAndView();
         model.addObject("trabajador", trabajador);
