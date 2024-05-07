@@ -10,57 +10,44 @@
     <h1 th:text="${titulo}"></h1>
 
     <form th:action="@{/trabajadores/create}" th:object="${trabajador}" method="post">
+      
         <div class="errorblock" th:if="${#fields.hasErrors('*')}">
+            <h2 th:text="${error}"></h2>
             <ul>
                 <li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
             </ul>
         </div>
 
+        <div th:if="${mensajeError}">
+            <h2 th:text="${error}"></h2>
+            <p th:text="${mensajeError}"></p>
+        </div>
+
         <fieldset>
             <legend>Datos del trabajador</legend>
+          
+                <label th:text="${id}"></label>
+                <input type="text" th:field="*{idTrabajador}" maxlength="5">
 
-            <table>
-                <tr>
-                    <td><label th:text="${id}">ID: </label></td>
-                    <td><input type="text" th:field="*{idTrabajador}" maxlength="100"></td>
-                </tr>
+                <label th:text="${dni}"></label>
+                <input type="text" th:field="*{dni}" maxlength="9">
 
-                <tr>
-                    <td><label th:text="${dni}">DNI: </label></td>
-                    <td><input type="text" th:field="*{dni}" maxlength="100"></td>
-                </tr>
+                <label th:text="${nombre}"></label>
+                <input type="text" th:field="*{nombre}" maxlength="100">
 
-                <tr>
-                    <td><label th:text="${nombre}">Nombre: </label></td>
-                    <td><input type="text" th:field="*{nombre}" maxlength="100"></td>
-                </tr>
+                <label th:text="${apellidos}"></label>
+                <input type="text" th:field="*{apellidos}" maxlength="100">
 
-                <tr>
-                    <td><label th:text="${apellidos}">Apellidos: </label></td>
-                    <td><input type="text" th:field="*{apellidos}" maxlength="100"></td>
-                </tr>
+                <label th:text="${especialidad}"></label>
+                <input type="text" th:field="*{especialidad}" maxlength="50">
 
-                <tr>
-                    <td><label th:text="${especialidad}">Especialidad: </label></td>
-                    <td><input type="text" th:field="*{especialidad}" maxlength="100"></td>
-                </tr>
+                <label th:text="${contraseña}"></label>
+                <input type="text" th:field="*{contraseña}" maxlength="50">
 
-                <tr>
-                    <td><label th:text="${contraseña}">Contraseña: </label></td>
-                    <td><input type="text" th:field="*{contraseña}" maxlength="100"></td>
-                </tr>
+                <label th:text="${email}"></label>
+                <input type="text" th:field="*{email}" maxlength="150">
 
-                <tr>
-                    <td><label th:text="${email}">Email: </label></td>
-                    <td><input type="text" th:field="*{email}" maxlength="100"></td>
-                </tr>
-
-                <tr>
-                    <td><button type="submit" th:text="Añadir"></button></td>
-                </tr>
-
-            </table>
-
+                <button type="submit" th:text="Añadir"></button>
 
         </fieldset>
     </form>

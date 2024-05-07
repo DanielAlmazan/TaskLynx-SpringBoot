@@ -7,66 +7,53 @@
   <link rel="stylesheet" th:href="@{/css/formStyle.css}">
 </head>
 <body>
-<h1 th:text="${titulo}"></h1>
+  <h1 th:text="${titulo}"></h1>
 
 <form th:action="@{/trabajadores/edit}" th:object="${trabajador}" method="post">
   <input type="hidden" name="_method" value="put"/>
-  <div class="errorblock" th:if="${#fields.hasErrors('*')}">
-    <ul>
-      <li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
-    </ul>
-  </div>
+  
+    <div class="errorblock" th:if="${#fields.hasErrors('*')}">
+      <h2 th:text="${error}"></h2>
+      <ul>
+        <li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+      </ul>
+    </div>
 
-  <fieldset>
-    <legend>Datos del trabajador</legend>
+    <div th:if="${mensajeError}">
+      <h2 th:text="${error}"></h2>
+      <p th:text="${mensajeError}"></p>
+    </div>
 
-    <table>
-      <tr>
-        <td><label th:text="${id}">ID: </label></td>
-        <td><input type="text" th:field="*{idTrabajador}" maxlength="100" readonly></td>
-      </tr>
+    <fieldset>
+      <legend>Datos del trabajador</legend>
 
-      <tr>
-        <td><label th:text="${dni}">DNI: </label></td>
-        <td><input type="text" th:field="*{dni}" maxlength="100"></td>
-      </tr>
+      <label th:text="${id}"></label>
+      <input type="text" th:field="*{idTrabajador}" maxlength="5">
 
-      <tr>
-        <td><label th:text="${nombre}">Nombre: </label></td>
-        <td><input type="text" th:field="*{nombre}" maxlength="100"></td>
-      </tr>
+      <label th:text="${dni}"></label>
+      <input type="text" th:field="*{dni}" maxlength="9">
 
-      <tr>
-        <td><label th:text="${apellidos}">Apellidos: </label></td>
-        <td><input type="text" th:field="*{apellidos}" maxlength="100"></td>
-      </tr>
+      <label th:text="${nombre}"></label>
+      <input type="text" th:field="*{nombre}" maxlength="100">
 
-      <tr>
-        <td><label th:text="${especialidad}">Especialidad: </label></td>
-        <td><input type="text" th:field="*{especialidad}" maxlength="100"></td>
-      </tr>
+      <label th:text="${apellidos}"></label>
+      <input type="text" th:field="*{apellidos}" maxlength="100">
 
-      <tr>
-        <td><label th:text="${contraseña}">Contraseña: </label></td>
-        <td><input type="text" th:field="*{contraseña}" maxlength="100"></td>
-      </tr>
+      <label th:text="${especialidad}"></label>
+      <input type="text" th:field="*{especialidad}" maxlength="50">
 
-      <tr>
-        <td><label th:text="${email}">Email: </label></td>
-        <td><input type="text" th:field="*{email}" maxlength="100"></td>
-      </tr>
+      <label th:text="${contraseña}"></label>
+      <input type="text" th:field="*{contraseña}" maxlength="50">
 
-      <tr>
-        <td><button type="submit" th:text="Editar"></button></td>
-      </tr>
+      <label th:text="${email}"></label>
+      <input type="text" th:field="*{email}" maxlength="150">
 
-    </table>
+      <button type="submit" th:text="Editar"></button>
 
+    </fieldset>
+  </form>
 
-  </fieldset>
-</form>
-
-<p><a th:href="@{/trabajadores}">Volver</a></p>
+  <p><a th:href="@{/trabajadores}">Volver</a></p>
 
 </body>
 </html>

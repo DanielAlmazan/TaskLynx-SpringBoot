@@ -45,9 +45,10 @@ public class TrabajadoresViewController {
     // Enlaza al formulario para editar un trabajador
     @GetMapping("/editar")
     public String editarTrabajador(Model model, @RequestParam String idTrabajador) {
-        model.addAttribute("titulo", "Editar trabajador");
+        Trabajador trabajador = trabajadorServices.findById(idTrabajador);
+        model.addAttribute("titulo", "Editar trabajador - " + trabajador.getIdTrabajador());
         addAtributes(model);
-        model.addAttribute("trabajador", trabajadorServices.findById(idTrabajador));
+        model.addAttribute("trabajador", trabajador);
         return "trabajadores/trabajadoresEditar";
     }
 
@@ -120,12 +121,12 @@ public class TrabajadoresViewController {
 
     // Método auxiliar para añadir atributos a la vista (formularios añadir y editar)
     private void addAtributes(Model mod) {
-        mod.addAttribute("id", "ID:");
-        mod.addAttribute("dni", "DNI:");
-        mod.addAttribute("nombre", "Nombre:");
-        mod.addAttribute("apellidos", "Apellidos:");
-        mod.addAttribute("especialidad", "Especialidad:");
-        mod.addAttribute("contraseña", "Contraseña:");
-        mod.addAttribute("email", "Email:");
+        mod.addAttribute("id", "ID: ");
+        mod.addAttribute("dni", "DNI: ");
+        mod.addAttribute("nombre", "Nombre: ");
+        mod.addAttribute("apellidos", "Apellidos: ");
+        mod.addAttribute("especialidad", "Especialidad: ");
+        mod.addAttribute("contraseña", "Contraseña: ");
+        mod.addAttribute("email", "Email: ");
     }
 }
