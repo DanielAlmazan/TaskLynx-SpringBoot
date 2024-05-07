@@ -2,28 +2,29 @@
 
 # Variables
 @token = 
+@port = 8443
+@host = https://localhost:{{port}}
 
 ###
 
-GET http://localhost:8080/api/trabajos/
+GET {{host}}/api/trabajos/
 
 ###
 
 # Crear un trabajo
 
-POST http://localhost:8080/api/trabajadores
-Authorization: Bearer {{token}}
+POST {{host}}/api/trabajadores
+# Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "idTrabajador": "",
+  "idTrabajador": "T004",
   "dni": "",
-  "nombre": "",
-  "apellidos": "",
+  "nombre": "Anaclet",
+  "apellidos": "Agent Secret",
   "especialidad": "",
   "contraseña": "",
-  "email": "",
-  "trabajos": []
+  "email": ""
 }
 
 ###
