@@ -43,6 +43,12 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=none
 logging.level.org.hibernate.SQL=debug
+server.port=8443
+server.ssl.key-store=classpath:TLKey.p12
+server.ssl.key-store-password=
+server.ssl.key-alias=TLKey
+server.ssl.key-password=
+server.ssl.key-store-type=pkcs12
 ```
 
 ## Entity Relationship Diagram for tasklynxDB
