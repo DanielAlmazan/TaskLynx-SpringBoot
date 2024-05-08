@@ -1,23 +1,25 @@
 @charset "UTF-8";
 
-/* Margin for the top of the questions */
-ol>li {
-    margin: 0 0 5rem 0;
-    &::marker {
-        font-size: 1.2rem;
-        font-weight: 780;
-    }
+table {
+    padding: 1rem .5rem;
+    border-spacing: 0;
 }
 
 /* Margin and padding for cells */
 td, th {
-    margin: .5rem;
-    padding: .5rem;
+    margin: .25rem;
+    padding: .25rem .75rem;
+    max-width: 20ch;
+}
+
+td {
+    overflow: scroll;
+    white-space: nowrap;
 }
 
 thead {
     text-align: center;
-    background-color: #d9d9d91a;
+    background-color: #FFFFFF32;
 }
 
 /* Background color for even columns */
@@ -31,11 +33,53 @@ tbody>tr:first-child>td {
 }
 
 /* Radius for last cells of the tables */
-tbody>tr:last-child>td {
-    border-radius: 0 0 1rem 1rem;
+tr {
+    &>td:last-child, &>th:last-child {
+        border-radius: 0 1rem 1rem 0;
+    }
+    
+    &>td:first-child, &>th:first-child {
+        border-radius: 1rem 0 0 1rem;
+    }
 }
 
 tfoot>td {
     background-color: #8585d0;
     border-radius: 0 0 1rem 1rem;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #16161a;
+    
+    &[value="Editar"] {
+        background-color: #41a23a;
+        margin-bottom: .25rem;
+    }
+
+    &[value="Eliminar"] {
+        background-color: #a23a3a;
+        margin-top: .25rem;
+    }
+
+    color: white;
+    border: .1rem solid #80e3ff3f;
+    border-radius: .5rem;
+    padding: .25rem .5rem;
+    box-shadow: 0 .1rem .1rem #050506;
+    transition: all .2s ease-in-out;
+    text-transform: uppercase;
+
+    &:hover {
+        box-shadow: 0 .5rem .6rem #050506;
+        
+        &[value="Eliminar"] {
+            background-color: #dc4c4c;
+        }
+        
+        &[value="Editar"] {
+            background-color: #4cdc4c;
+        }
+        border-color: #80e3ff89;
+    }
 }

@@ -9,53 +9,56 @@
 <body>
 <h1 th:text="${titulo}"></h1>
 
-<form th:action="@{/trabajadores/nuevo}" method="get">
-    <input type="submit" value="Añadir trabajador">
-</form>
+<menu>
+    <li><a th:href="@{/trabajadores/nuevo}">Añadir</a></li>
+</menu>
 
-<table th:if="${not trabajadores.isEmpty()}">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Dni</th>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Especialidad</th>
-        <th>Email</th>
-        <th>Trabajos asociados</th>
-        <th>Opciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="trabajador: ${trabajadores}">
-        <td><a th:text="${trabajador.idTrabajador}" th:href="@{/trabajadores/{idTrabajador}(idTrabajador=${trabajador.idTrabajador})}"></a></td>
-        <td th:text="${trabajador.dni}"></td>
-        <td th:text="${trabajador.nombre}"></td>
-        <td th:text="${trabajador.apellidos}"></td>
-        <td th:text="${trabajador.especialidad}"></td>
-        <td th:text="${trabajador.email}"></td>
-        <td>
-            <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
-            <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
-                    <span><a th:text="${trabajo.getCodTrabajo()}"></a></span> <!-- aqui falta th:href='vistaDelTrabajo' -->
+<main>
+    <table th:if="${not trabajadores.isEmpty()}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Dni</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Especialidad</th>
+            <th>Email</th>
+            <th>Trabajos asociados</th>
+            <th>Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trabajador: ${trabajadores}">
+            <td><a th:text="${trabajador.idTrabajador}"
+                   th:href="@{/trabajadores/{idTrabajador}(idTrabajador=${trabajador.idTrabajador})}"></a></td>
+            <td th:text="${trabajador.dni}"></td>
+            <td th:text="${trabajador.nombre}"></td>
+            <td th:text="${trabajador.apellidos}"></td>
+            <td th:text="${trabajador.especialidad}"></td>
+            <td th:text="${trabajador.email}"></td>
+            <td>
+                <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
+                <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
+                    <span><a th:text="${trabajo.getCodTrabajo()}"></a></span>
+                    <!-- aqui falta th:href='vistaDelTrabajo' -->
                     <span th:if="${!iterStat.last}">, </span>
                     </span>
-        </td>
-        <td>
-            <form th:action="@{/trabajadores/editar}" method="get">
-                <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
-                <input type="submit" value="Editar">
-            </form>
-            <form th:action="@{/trabajadores/delete}" method="post">
-                <input type="hidden" name="_method" value="delete">
-                <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
-                <input type="submit" value="Eliminar">
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
+            </td>
+            <td>
+                <form th:action="@{/trabajadores/editar}" method="get">
+                    <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+                    <input type="submit" value="Editar">
+                </form>
+                <form th:action="@{/trabajadores/delete}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+                    <input type="submit" value="Eliminar">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
 <p><a th:href="@{/}">Volver</a></p>
 
 </body>
