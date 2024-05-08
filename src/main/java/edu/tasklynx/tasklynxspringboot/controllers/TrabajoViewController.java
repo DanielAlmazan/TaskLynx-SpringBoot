@@ -91,6 +91,7 @@ public class TrabajoViewController {
                         + "' ya existe.");
             }
         } else {
+            System.out.println(result);
             model.setViewName("trabajos/trabajoFormulario");
             model.addObject("titulo", "Nuevo Trabajo");
             model.addObject("error", "Errores:");

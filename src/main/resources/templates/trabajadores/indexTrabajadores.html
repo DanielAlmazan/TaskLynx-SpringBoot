@@ -38,13 +38,12 @@
             <td th:text="${trabajador.apellidos}"></td>
             <td th:text="${trabajador.especialidad}"></td>
             <td th:text="${trabajador.email}"></td>
-            <td>
-                <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
+            <td id="listaTrabajos">
+                <span th:if="${#lists.isEmpty(trabajador.trabajos)}">-</span>
                 <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
-                    <span><a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
-                             th:text="${trabajo.codTrabajo}" class="enlace"></a></span>
-                    <span th:if="${!iterStat.last}">, </span>
-                    </span>
+                    <a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
+                       th:text="${trabajo.codTrabajo}" class="enlace"></a>
+                </span>
             </td>
             <td>
                 <form th:action="@{/trabajadores/editar}" method="get">
