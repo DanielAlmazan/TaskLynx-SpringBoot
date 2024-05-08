@@ -9,8 +9,8 @@
 <body>
     <h1 th:text="${titulo}"></h1>
 
-    <form th:action="@{/trabajos/create}" th:object="${trabajo}" method="post">
-        <input type="hidden" name="_method" th:value="${trabajo.codTrabajo != null ? 'PUT' : 'POST'}" />
+    <form th:action="@{/trabajos/processForm}" th:object="${trabajo}" method="post">
+        <input type="hidden" name="_method" th:value="${editar ? 'PUT' : 'POST'}" />
         <div class="errorblock" th:if="${#fields.hasErrors('*')}">
             <h2 th:text="${error}"></h2>
             <ul>
@@ -18,7 +18,7 @@
             </ul>
         </div>
 
-        <div th:if="${mensajeError}">
+        <div class="errorblock" th:if="${mensajeError}">
             <h2 th:text="${error}"></h2>
             <p th:text="${mensajeError}"></p>
         </div>
@@ -27,7 +27,7 @@
             <legend>Datos del trabajo</legend>
 
             <label for="codTrabajo">Código del trabajo<span class="necesario"> *</span>:</label>
-            <input id="codTrabajo" type="text" th:field="*{codTrabajo}" maxlength="5">
+            <input id="codTrabajo" type="text" th:field="*{codTrabajo}" maxlength="5" th:readonly="${editar}">
 
             <label for="categoria">Categoría<span class="necesario"> *</span>:</label>
             <input id="categoria" type="text" th:field="*{categoria}" maxlength="50">
@@ -35,14 +35,23 @@
             <label for="descripcion">Descripción<span class="necesario"> *</span>:</label>
             <input id="descripcion" type="text" th:field="*{descripcion}" maxlength="500">
 
-            <label for="fecIni">Fecha de inicio<span class="necesario"> *</span>:</label></td>
+            <label for="fecIni">Fecha de inicio<span class="necesario" th:if="${not editar}"> *</span>:
+                <span th:if="${editar}" th:text="'Fecha actual ' + *{fecIni}"></span></label>
             <input id="fecIni" type="date" th:field="*{fecIni}">
+
+            <div th:if="${editar}">
+                <label for="fecFin">Fecha de fin:</label>
+                <input id="fecFin" type="date" th:field="*{fecFin}">
+
+                <label for="tiempo">Tiempo en horas:</label>
+                <input id="tiempo" type="number" th:field="*{tiempo}" step="0.1" min="0" max="999.9">
+            </div>
 
             <label for="idTrabajador">Trabajador asignado:</label>
             <select id="idTrabajador" th:field="*{idTrabajador}">
                 <option value="">-- No asignado --</option>
-                <option th:each="trabajador: ${trabajadores}" th:value="${trabajador.idTrabajador}">
-                    <span th:text="${trabajador.nombre} + ' ' + ${trabajador.apellidos}"></span>
+                <option th:each="trabajador: ${trabajadores}" th:value="${trabajador.idTrabajador}"
+                        th:text="${trabajador.nombre} + ' ' + ${trabajador.apellidos}">
                 </option>
             </select>
 
@@ -55,7 +64,7 @@
         </fieldset>
     </form>
 
-    <p><a th:href="@{/trabajos}">Volver</a></p>
+    <p><a th:href="@{/trabajos}" class="enlace">Volver</a></p>
 
 </body>
 </html>

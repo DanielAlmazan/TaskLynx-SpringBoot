@@ -5,6 +5,17 @@
     <title th:text="${titulo}"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+
+    <script defer>
+        function confirmDelete(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que quieres eliminar este trabajo? Esta acción no se podrá deshacer")) {
+                // Si el usuario confirma, se envía el formulario
+                event.target.form.submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <h1 th:text="${titulo}"></h1>
@@ -31,7 +42,10 @@
         </thead>
         <tbody>
             <tr th:each="trabajo: ${trabajos}">
-                <td th:text="${trabajo.codTrabajo}"></td>
+                <td>
+                    <a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
+                       th:text="${trabajo.codTrabajo}" class="enlace"></a>
+                </td>
                 <td th:text="${trabajo.categoria}"></td>
                 <td th:text="${trabajo.descripcion}"></td>
                 <td th:text="${trabajo.fecIni}"></td>
@@ -40,13 +54,13 @@
                     <span th:if="${trabajo.fecFin == null}">-</span>
                 </td>
                 <td>
-                    <span th:if="${trabajo.tiempo}" th:text="${trabajo.tiempo}"></span>
+                    <span th:if="${trabajo.tiempo}" th:text="${trabajo.tiempo + ' h'}"></span>
                     <span th:if="${trabajo.tiempo == null}">-</span>
                 </td>
                 <td th:text="${trabajo.prioridad}"></td>
                 <td>
                     <a th:if="${trabajo.idTrabajador}" th:href="@{/trabajadores/{id} (id = ${trabajo.idTrabajador.idTrabajador})}"
-                       th:text="${trabajo.idTrabajador.nombre}"></a>
+                       th:text="${trabajo.idTrabajador.nombre}" class="enlace"></a>
                     <span th:if="${trabajo.idTrabajador == null}">-</span>
                 </td>
                 <td>
@@ -54,16 +68,16 @@
                         <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
                         <input type="submit" value="Editar">
                     </form>
-                    <form th:action="@{/trabajos/delete}" method="post">
-                        <input type="hidden" name="_method" value="delete">
+                    <form th:action="@{/trabajos/delete}" method="post" class="deleteForm">
                         <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
-                        <input type="submit" value="Eliminar">
+                        <input type="button" value="Eliminar" onclick="confirmDelete(event)" onkeydown="confirmDelete(event)">
                     </form>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <p><a th:href="@{/}">Volver</a></p>
+    <p><a th:href="@{/}" class="enlace">Volver</a></p>
 </body>
 </html>
+

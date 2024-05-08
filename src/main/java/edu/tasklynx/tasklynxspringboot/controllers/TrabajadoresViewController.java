@@ -68,6 +68,7 @@ public class TrabajadoresViewController {
             }
 
             model.setViewName("ready");
+            model.addObject("page", "trabajadores");
 
             if (!exists) {
                 trabajadorServices.save(trabajador);
@@ -97,6 +98,7 @@ public class TrabajadoresViewController {
         if (!result.hasErrors()) {
             trabajadorServices.save(trabajador);
             model.addObject("titulo", "Trabajador actualizado");
+            model.addObject("page", "trabajadores");
             model.addObject("mensaje", "El trabajador ha sido actualizado correctamente.");
         } else {
             model.setViewName("trabajadores/trabajadoresEditar");
@@ -114,6 +116,7 @@ public class TrabajadoresViewController {
         ModelAndView model = new ModelAndView();
         model.setViewName("ready");
         model.addObject("titulo", "Trabajador eliminado");
+        model.addObject("page", "trabajadores");
         model.addObject("mensaje", "El trabajador ha sido eliminado correctamente.");
         trabajadorServices.delete(idTrabajador);
         return model;

@@ -29,8 +29,10 @@
         </thead>
         <tbody>
         <tr th:each="trabajador: ${trabajadores}">
-            <td><a th:text="${trabajador.idTrabajador}"
-                   th:href="@{/trabajadores/{idTrabajador}(idTrabajador=${trabajador.idTrabajador})}"></a></td>
+            <td>
+                <a th:text="${trabajador.idTrabajador}"
+                   th:href="@{/trabajadores/{idTrabajador}(idTrabajador=${trabajador.idTrabajador})}" class="enlace"></a>
+            </td>
             <td th:text="${trabajador.dni}"></td>
             <td th:text="${trabajador.nombre}"></td>
             <td th:text="${trabajador.apellidos}"></td>
@@ -39,8 +41,8 @@
             <td>
                 <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
                 <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
-                    <span><a th:text="${trabajo.getCodTrabajo()}"></a></span>
-                    <!-- aqui falta th:href='vistaDelTrabajo' -->
+                    <span><a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
+                             th:text="${trabajo.codTrabajo}" class="enlace"></a></span>
                     <span th:if="${!iterStat.last}">, </span>
                     </span>
             </td>
@@ -59,7 +61,7 @@
         </tbody>
     </table>
 </main>
-<p><a th:href="@{/}">Volver</a></p>
+<p><a th:href="@{/}" class="enlace">Volver</a></p>
 
 </body>
 </html>

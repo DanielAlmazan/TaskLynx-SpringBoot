@@ -17,6 +17,10 @@ td {
     white-space: nowrap;
 }
 
+.trabajoFila {
+    height: 3rem;
+}
+
 thead {
     text-align: center;
     background-color: #FFFFFF32;
@@ -48,7 +52,7 @@ tfoot>td {
     border-radius: 0 0 1rem 1rem;
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="button"] {
     width: 100%;
     background-color: #16161a;
     
