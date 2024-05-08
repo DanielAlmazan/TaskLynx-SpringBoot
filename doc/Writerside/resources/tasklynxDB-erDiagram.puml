@@ -1,0 +1,28 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class trabajador {
+   dni: varchar(9)
+   nombre: varchar(100)
+   apellidos: varchar(100)
+   especialidad: varchar(50)
+   contraseña: varchar(50)
+   email: varchar(150)
+   id_trabajador: varchar(5)
+}
+class trabajo {
+   categoria: varchar(50)
+   descripcion: varchar(500)
+   fec_ini: date
+   fec_fin: date
+   tiempo: numeric(4,1)
+   id_trabajador: varchar(5)
+   prioridad: numeric(1)
+   cod_trabajo: varchar(5)
+}
+
+trabajo     -[#595959,plain]-^  trabajador : "id_trabajador"
+@enduml
