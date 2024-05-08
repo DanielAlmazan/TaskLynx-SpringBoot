@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detailStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+
+
+    <script defer>
+        function confirmDelete(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que quieres eliminar este trabajo? Esta acción no se podrá deshacer")) {
+                // Si el usuario confirma, se envía el formulario
+                event.target.form.submit();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+
+    <section class="container">
+        <article>
+            <h3>ID:</h3>
+            <span th:text="${trabajo.codTrabajo}"></span>
+        </article>
+
+        <article>
+            <h3>Categoría:</h3>
+            <span th:text="${trabajo.categoria}"></span>
+        </article>
+
+        <article>
+            <h3>Descripción:</h3>
+            <span th:text="${trabajo.descripcion}"></span>
+        </article>
+
+        <article>
+            <h3>Fecha de inicio:</h3>
+            <span th:text="${trabajo.fecIni}"></span>
+        </article>
+
+        <article>
+            <h3>Fecha de fin:</h3>
+            <span th:if="${trabajo.fecFin}" th:text="${trabajo.fecFin}"></span>
+            <span th:if="${trabajo.fecFin == null}">-</span>
+        </article>
+
+        <article>
+            <h3>Tiempo:</h3>
+            <span th:if="${trabajo.tiempo}" th:text="${trabajo.tiempo + ' h'}"></span>
+            <span th:if="${trabajo.tiempo == null}">-</span>
+        </article>
+
+        <article>
+            <h3>Prioridad:</h3>
+            <span th:text="${trabajo.prioridad}"></span>
+        </article>
+
+        <article>
+            <h3>Trabajador asignado:</h3>
+            <span th:if="${trabajo.idTrabajador}">
+                <a th:href="@{/trabajadores/{id} (id = ${trabajo.idTrabajador.idTrabajador})}"
+               th:text="${trabajo.idTrabajador.nombre}" class="enlace"></a></span>
+            <span th:if="${trabajo.idTrabajador == null}">-</span>
+        </article>
+    </section>
+
+    <form th:action="@{/trabajos/editar}" method="get">
+        <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
+        <input type="submit" value="Editar">
+    </form>
+    <form th:action="@{/trabajos/delete}" method="post" class="deleteForm">
+        <input type="hidden" name="codTrabajo" th:value="${trabajo.codTrabajo}">
+        <input type="button" value="Eliminar" onclick="confirmDelete(event)" onkeydown="confirmDelete(event)">
+    </form>
+
+    <p><a th:href="@{/trabajos}" class="enlace">Volver</a></p>
+
+</body>
+</html>
