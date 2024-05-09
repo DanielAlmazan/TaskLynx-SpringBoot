@@ -5,6 +5,17 @@
     <title th:text="${titulo}"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+
+    <script defer>
+        function confirmDelete(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que quieres eliminar este trabajador? Esta acción no se podrá deshacer")) {
+                // Si el usuario confirma, se envía el formulario
+                event.target.form.submit();
+            }
+        }
+    </script>
 </head>
 <body>
 <h1 th:text="${titulo}"></h1>
@@ -38,13 +49,12 @@
             <td th:text="${trabajador.apellidos}"></td>
             <td th:text="${trabajador.especialidad}"></td>
             <td th:text="${trabajador.email}"></td>
-            <td>
-                <span th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</span>
+            <td id="listaTrabajos">
+                <span th:if="${#lists.isEmpty(trabajador.trabajos)}">-</span>
                 <span th:each="trabajo, iterStat : ${trabajador.trabajos}">
-                    <span><a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
-                             th:text="${trabajo.codTrabajo}" class="enlace"></a></span>
-                    <span th:if="${!iterStat.last}">, </span>
-                    </span>
+                    <a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
+                       th:text="${trabajo.codTrabajo}" class="enlace"></a>
+                </span>
             </td>
             <td>
                 <form th:action="@{/trabajadores/editar}" method="get">
@@ -52,9 +62,8 @@
                     <input type="submit" value="Editar">
                 </form>
                 <form th:action="@{/trabajadores/delete}" method="post">
-                    <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
-                    <input type="submit" value="Eliminar">
+                    <input type="submit" value="Eliminar" onclick="confirmDelete(event)" onkeydown="confirmDelete(event)">
                 </form>
             </td>
         </tr>

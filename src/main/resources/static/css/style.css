@@ -65,6 +65,7 @@ menu {
     background-color: #1e1e24;
     padding: .1rem;
     box-shadow: 0 -.5rem .4rem #050506;
+    box-sizing: border-box;
 
     & li {
         display: inline-block;
