@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/detailStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+
+    <script defer>
+        function confirmDelete(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que quieres eliminar este trabajador? Esta acción no se podrá deshacer")) {
+                // Si el usuario confirma, se envía el formulario
+                event.target.form.submit();
+            }
+        }
+    </script>
+</head>
+<body>
+    <main>
+        <h1 th:text="${titulo}"></h1>
+
+        <section class="container" id="datos-trabajador">
+            <article class="dato-trabajador">
+                <h3>ID:</h3>
+                <span th:text="${trabajador.idTrabajador}"></span>
+            </article>
+
+            <article class="dato-trabajador">
+                <h3>DNI:</h3>
+                <span th:text="${trabajador.dni}"></span>
+            </article>
+
+            <article class="dato-trabajador">
+                <h3>Nombre:</h3>
+                <span th:text="${trabajador.nombre}"></span>
+            </article>
+
+            <article class="dato-trabajador">
+                <h3>Apellidos:</h3>
+                <span th:text="${trabajador.apellidos}"></span>
+            </article>
+
+            <article class="dato-trabajador">
+                <h3>Especialidad:</h3>
+                <span th:text="${trabajador.especialidad}"></span>
+            </article>
+
+            <article class="dato-trabajador">
+                <h3>Email:</h3>
+                <span th:text="${trabajador.email}"></span>
+            </article>
+        </section>
+        <h3>Trabajos asociados:</h3>
+        <p th:if="${#lists.isEmpty(trabajador.trabajos)}">No hay trabajos asignados</p>
+        <table th:if="${!#lists.isEmpty(trabajador.trabajos)}">
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Fecha de inicio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="trabajo : ${trabajador.trabajos}" class="trabajoFila">
+                <td>
+                    <a th:href="@{/trabajos/{id} (id = ${trabajo.codTrabajo})}"
+                       th:text="${trabajo.codTrabajo}" class="enlace"></a>
+                </td>
+                <td th:text="${trabajo.descripcion}"></td>
+                <td th:text="${trabajo.fecIni}" class="centrado"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <form th:action="@{/trabajadores/editar}" method="get">
+        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+        <input type="submit" value="Editar">
+    </form>
+
+    <form th:action="@{/trabajadores/delete}" method="post">
+        <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
+        <input type="button" value="Eliminar" onclick="confirmDelete(event)" onkeydown="confirmDelete(event)">
+    </form>
+
+    <p><a th:href="@{/trabajadores}" class="enlace">Volver</a></p>
+</body>
+</html>
