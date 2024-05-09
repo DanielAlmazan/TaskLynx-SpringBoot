@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +41,15 @@ public class TrabajadoresController {
         try {
             trabajadores = trabajadorService.findAll();
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(trabajadores, HttpStatus.OK);
+        response.put("error", false);
+        response.put("result", trabajadores);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve un trabajador por ID
@@ -57,16 +61,21 @@ public class TrabajadoresController {
         try {
             trabajador = trabajadorService.findById(id);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajador == null) {
-            response.put("mensaje", "El trabajador con ID: \"" + id + "\" no existe en la base de datos");
+            response.put("error", true);
+            response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(trabajador, HttpStatus.OK);
+
+        response.put("error", false);
+        response.put("result", trabajador);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve un trabajador por nombre y contraseña
@@ -78,16 +87,21 @@ public class TrabajadoresController {
         try {
             trabajador = trabajadorService.findByNameAndPass(nombre, contraseña);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajador == null) {
-            response.put("mensaje", "El trabajador con usuario: " + nombre + " y contraseña: " + contraseña + " no existe en la base de datos");
+            response.put("error", true);
+            response.put("errorMessage", "Las credenciales son incorrectas");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(trabajador, HttpStatus.OK);
+
+        response.put("error", false);
+        response.put("result", trabajador);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve una lista de trabajadores por especialidad
@@ -121,15 +135,13 @@ public class TrabajadoresController {
         try {
             trabajos = trabajadorService.findById(id).getTrabajos().stream().toList();
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajos.isEmpty()) {
-            response.put("mensaje", "No existen trabajos para el trabajador con ID: " + id);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("errorMessage", trabajos);
 
         return new ResponseEntity<>(trabajos, HttpStatus.OK);
     }
@@ -137,77 +149,70 @@ public class TrabajadoresController {
     // Devuelve los trabajos pendientes de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos/pendientes")
     public ResponseEntity<?> indexOneTrabajosPendientes(@PathVariable String id) {
-        List<Trabajo> trabajosCompletados;
+        List<Trabajo> trabajosPendientes;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajosCompletados = trabajoService.findPendientesPorTrabajador(id);
+            trabajosPendientes = trabajoService.findPendientesPorTrabajador(id);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("errorMessage", trabajosPendientes);
 
-        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/trabajadores/{id}/trabajos/pendientes/prioridad")
     public ResponseEntity<?> indexOneTrabajosPendientesOrderByPrioridad(@PathVariable String id) {
-        List<Trabajo> trabajosCompletados;
+        List<Trabajo> trabajosPendientes;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajosCompletados = trabajoService.findPendientesPorTrabajadorOrderByPrioridadAsc(id);
+            trabajosPendientes = trabajoService.findPendientesPorTrabajadorOrderByPrioridadAsc(id);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("errorMessage", trabajosPendientes);
 
-        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/trabajadores/{id}/trabajos/pendientes/{prioridad}")
     public ResponseEntity<?> indexOneTrabajosPendientesByPrioridad(@PathVariable String id, @PathVariable BigDecimal prioridad) {
-        List<Trabajo> trabajosCompletados;
+        List<Trabajo> trabajosPendientes;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajosCompletados = trabajoService.findPendientesPorTrabajadorYPrioridad(id, prioridad);
+            trabajosPendientes = trabajoService.findPendientesPorTrabajadorYPrioridad(id, prioridad);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("errorMessage", trabajosPendientes);
 
-        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve los trabajos completados de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos/completados")
     public ResponseEntity<?> indexOneTrabajosCompletadosEntreFechas(
-            @PathVariable String id,
-            @RequestParam
-                    (required = false)
-            @DateTimeFormat() LocalDate fechaIni,
-            @RequestParam
-                    (required = false)
-            @DateTimeFormat() LocalDate fechaFin
+            @PathVariable
+            String id,
+            @RequestParam (required = false) @DateTimeFormat()
+            LocalDate fechaIni,
+            @RequestParam (required = false) @DateTimeFormat()
+            LocalDate fechaFin
     ) {
         List<Trabajo> trabajosCompletados;
         Map<String, Object> response = new HashMap<>();
@@ -223,17 +228,15 @@ public class TrabajadoresController {
                 trabajosCompletados = trabajoService.findCompletadosPorTrabajadorEntreFechas(id, fechaIni, fechaFin);
             }
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos completados para el trabajador con ID: " + id + " entre las fechas " + fechaIni + " y " + fechaFin);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("errorMessage", trabajosCompletados);
 
-        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Crea un trabajador
@@ -241,19 +244,22 @@ public class TrabajadoresController {
     public ResponseEntity<?> create(@Valid @RequestBody Trabajador trabajador, BindingResult result) {
         Trabajador newTrabajador;
         Map<String, Object> response = new HashMap<>();
+        List<String> errors = new ArrayList<>();
 
-        if (showErrors(result, response)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        if (showErrors(result, response, errors)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         try {
             newTrabajador = trabajadorService.save(trabajador);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la inserción en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            errors.add(e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("errorsList", errors);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El trabajador ha sido insertado con éxito");
-        response.put("trabajador", newTrabajador);
+        response.put("error", false);
+        response.put("result", newTrabajador);
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -264,11 +270,14 @@ public class TrabajadoresController {
         Trabajador currentTrabajador = trabajadorService.findById(id);
         Trabajador updatedTrabajador;
         Map<String, Object> response = new HashMap<>();
+        List<String> errors = new ArrayList<>();
 
-        if (showErrors(result, response)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        if (showErrors(result, response, errors)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         if (currentTrabajador == null) {
-            response.put("mensaje", "Error: no se pudo editar, el trabajador con ID: " + id + " no existe en la base de datos");
+            response.put("error", true);
+            errors.add("No se pudo editar, el trabajador con ID '" + id + "' no existe en la base de datos");
+            response.put("errorsList", errors);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -282,13 +291,15 @@ public class TrabajadoresController {
 
             updatedTrabajador = trabajadorService.save(currentTrabajador);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la actualización en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            errors.add(e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("errorsList", errors);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El trabajador ha sido actualizado con éxito");
-        response.put("trabajador", updatedTrabajador);
+        response.put("error", false);
+        response.put("result", updatedTrabajador);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -302,24 +313,26 @@ public class TrabajadoresController {
         try {
             trabajadorService.delete(id);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la eliminación en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El trabajador ha sido eliminado con éxito");
+        response.put("error", false);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Método auxiliar para mostrar errores
-    private boolean showErrors(BindingResult result, Map<String, Object> response) {
+    private boolean showErrors(BindingResult result, Map<String, Object> response, List<String> errors) {
         if (result.hasErrors()) {
-            List<String> errors = result.getFieldErrors()
+            errors = result.getFieldErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
 
-            response.put("errors", errors);
+            response.put("error", true);
+            response.put("errorsList", errors);
             return true;
         }
         return false;

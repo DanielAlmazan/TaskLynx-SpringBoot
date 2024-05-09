@@ -1,6 +1,8 @@
 # File for testing the API 
 
 # Variables
+# SSL @port = 8443
+# SSL @host = https://localhost:{{port}}/api
 @port = 8080
 @host = http://localhost:{{port}}/api
 @idTrabajador2 = T002
