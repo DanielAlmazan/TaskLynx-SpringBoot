@@ -30,7 +30,7 @@ public class TrabajadoresViewController {
     public String verTrabajador(Model model, @PathVariable String id) {
         model.addAttribute("titulo", "Trabajador " + id);
         model.addAttribute("trabajador", trabajadorServices.findById(id));
-        return "trabajadores/trabajadorVer";
+        return "trabajadores/trabajadoresDetalle";
     }
 
     // Enlaza al formulario para añadir un trabajador
@@ -39,7 +39,8 @@ public class TrabajadoresViewController {
         model.addAttribute("titulo", "Añadir trabajador");
         addAtributes(model);
         model.addAttribute("trabajador", new Trabajador());
-        return "trabajadores/trabajadoresCrear";
+        model.addAttribute("editar", false);
+        return "trabajadores/trabajadoresForm";
     }
 
     // Enlaza al formulario para editar un trabajador
@@ -49,7 +50,15 @@ public class TrabajadoresViewController {
         model.addAttribute("titulo", "Editar trabajador - " + trabajador.getIdTrabajador());
         addAtributes(model);
         model.addAttribute("trabajador", trabajador);
-        return "trabajadores/trabajadoresEditar";
+        model.addAttribute("editar", true);
+        return "trabajadores/trabajadoresForm";
+    }
+
+    // Devuelve el formulario de añadir o editar según el método
+    @RequestMapping("/processForm")
+    public ModelAndView processForm(@Valid Trabajador trabajador, BindingResult result, Model model, @RequestParam String _method) {
+        if(_method.equals("POST")) return create(trabajador, result, model);
+        else return edit(trabajador, result, model);
     }
 
     // Crea un trabajador
@@ -67,21 +76,22 @@ public class TrabajadoresViewController {
                 }
             }
 
-            model.setViewName("ready");
-            model.addObject("page", "trabajadores");
-
             if (!exists) {
+                model.setViewName("ready");
                 trabajadorServices.save(trabajador);
                 model.addObject("titulo", "Trabajador añadido");
+                model.addObject("page", "trabajadores");
                 model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
             } else {
-                model.addObject("titulo", "Error");
-                model.addObject("mensaje", "El trabajador ya existe.");
+                model.setViewName("trabajadores/trabajadoresForm");
+                model.addObject("titulo", "Nuevo trabajado");
+                model.addObject("error", "Error: ");
+                model.addObject("mensajeError", "El trabajador con código '" + trabajador.getIdTrabajador() + "' ya existe.");
             }
         } else {
-            model.setViewName("trabajadores/trabajadoresCrear");
-            model.addObject("titulo", "Error");
-            model.addObject("mensaje", "Ha habido un error al añadir el trabajador.");
+            model.setViewName("trabajadores/trabajadoresForm");
+            model.addObject("titulo", "Nuevo trabajador");
+            model.addObject("error", "Errores: ");
         }
 
         addAtributes(mod);
@@ -101,9 +111,9 @@ public class TrabajadoresViewController {
             model.addObject("page", "trabajadores");
             model.addObject("mensaje", "El trabajador ha sido actualizado correctamente.");
         } else {
-            model.setViewName("trabajadores/trabajadoresEditar");
-            model.addObject("titulo", "Error");
-            model.addObject("mensaje", "Ha habido un error al actualizar el trabajador.");
+            model.setViewName("trabajadores/trabajadoresForm");
+            model.addObject("titulo", "Actualizar trabajador - " + trabajador.getIdTrabajador());
+            model.addObject("error", "Errores: ");
         }
 
         addAtributes(mod);
@@ -111,7 +121,7 @@ public class TrabajadoresViewController {
     }
 
     // Elimina un trabajador
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete")
     public ModelAndView delete(@RequestParam String idTrabajador) {
         ModelAndView model = new ModelAndView();
         model.setViewName("ready");
@@ -124,12 +134,12 @@ public class TrabajadoresViewController {
 
     // Método auxiliar para añadir atributos a la vista (formularios añadir y editar)
     private void addAtributes(Model mod) {
-        mod.addAttribute("id", "ID: ");
-        mod.addAttribute("dni", "DNI: ");
-        mod.addAttribute("nombre", "Nombre: ");
-        mod.addAttribute("apellidos", "Apellidos: ");
-        mod.addAttribute("especialidad", "Especialidad: ");
-        mod.addAttribute("contraseña", "Contraseña: ");
-        mod.addAttribute("email", "Email: ");
+        mod.addAttribute("id", "ID *");
+        mod.addAttribute("dni", "DNI *");
+        mod.addAttribute("nombre", "Nombre ");
+        mod.addAttribute("apellidos", "Apellidos ");
+        mod.addAttribute("especialidad", "Especialidad * ");
+        mod.addAttribute("contraseña", "Contraseña *");
+        mod.addAttribute("email", "Email ");
     }
 }

@@ -26,6 +26,7 @@ public class TrabajadoresController {
     @Autowired
     private ITrabajoService trabajoService;
 
+    // Devuelve todos los trabajadores
     @GetMapping("/trabajadores")
     public ResponseEntity<?> indexAll() {
         List<Trabajador> trabajadores;
@@ -42,6 +43,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajadores, HttpStatus.OK);
     }
 
+    // Devuelve un trabajador por ID
     @GetMapping("/trabajadores/{id}")
     public ResponseEntity<?> indexOne(@PathVariable String id) {
         Trabajador trabajador;
@@ -62,6 +64,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajador, HttpStatus.OK);
     }
 
+    // Devuelve un trabajador por nombre y contraseña
     @GetMapping("/trabajadores/{nombre}/{contraseña}")
     public ResponseEntity<?> indexOneByUsuarioAndContraseña(@PathVariable String nombre, @PathVariable String contraseña) {
         Trabajador trabajador;
@@ -82,6 +85,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajador, HttpStatus.OK);
     }
 
+    // Devuelve los trabajos de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos")
     public ResponseEntity<?> indexOneTrabajos(@PathVariable String id) {
         List<Trabajo> trabajos;
@@ -103,6 +107,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajos, HttpStatus.OK);
     }
 
+    // Devuelve los trabajos pendientes de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos/pendientes")
     public ResponseEntity<?> indexOneTrabajosPendientes(@PathVariable String id) {
         List<Trabajo> trabajosCompletados;
@@ -124,6 +129,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
     }
 
+    // Devuelve los trabajos completados de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos/completados")
     public ResponseEntity<?> indexOneTrabajosCompletados(@PathVariable String id) {
         List<Trabajo> trabajosCompletados;
@@ -145,6 +151,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
     }
 
+    // Crea un trabajador
     @PostMapping("/trabajadores")
     public ResponseEntity<?> create(@Valid @RequestBody Trabajador trabajador, BindingResult result) {
         Trabajador newTrabajador;
@@ -165,7 +172,9 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // Actualiza un trabajador
     @PutMapping("/trabajadores/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> update(@Valid @RequestBody Trabajador trabajador, @PathVariable String id, BindingResult result) {
         Trabajador currentTrabajador = trabajadorService.findById(id);
         Trabajador updatedTrabajador;
@@ -195,11 +204,12 @@ public class TrabajadoresController {
 
         response.put("mensaje", "El trabajador ha sido actualizado con éxito");
         response.put("trabajador", updatedTrabajador);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // Elimina un trabajador
     @DeleteMapping("/trabajadores/{id}/eliminar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete(@PathVariable String id) {
 
         Map<String, Object> response = new HashMap<>();
@@ -216,7 +226,7 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Método auxiliar para mostrar errores (va el mismo código en put y post)
+    // Método auxiliar para mostrar errores
     private boolean showErrors(BindingResult result, Map<String, Object> response) {
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors()

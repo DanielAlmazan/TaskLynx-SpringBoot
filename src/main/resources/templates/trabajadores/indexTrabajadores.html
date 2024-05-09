@@ -5,6 +5,17 @@
     <title th:text="${titulo}"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+
+    <script defer>
+        function confirmDelete(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que quieres eliminar este trabajador? Esta acción no se podrá deshacer")) {
+                // Si el usuario confirma, se envía el formulario
+                event.target.form.submit();
+            }
+        }
+    </script>
 </head>
 <body>
 <h1 th:text="${titulo}"></h1>
@@ -51,9 +62,8 @@
                     <input type="submit" value="Editar">
                 </form>
                 <form th:action="@{/trabajadores/delete}" method="post">
-                    <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="idTrabajador" th:value="${trabajador.getIdTrabajador()}">
-                    <input type="submit" value="Eliminar">
+                    <input type="submit" value="Eliminar" onclick="confirmDelete(event)" onkeydown="confirmDelete(event)">
                 </form>
             </td>
         </tr>
