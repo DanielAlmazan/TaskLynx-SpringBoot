@@ -81,7 +81,7 @@ public class TrabajadoresViewController {
             model.addObject("titulo", "Trabajador añadido");
             model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
         } else {
-            model.setViewName("trabajadores/trabajadoresCrear");
+            model.setViewName("trabajadores/trabajadoresForm");
             model.addObject("titulo", "Error");
             model.addObject("mensaje", "Ha habido un error al añadir el trabajador.");
         }

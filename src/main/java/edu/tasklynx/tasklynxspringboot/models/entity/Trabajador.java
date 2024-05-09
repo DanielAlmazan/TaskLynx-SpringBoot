@@ -13,7 +13,9 @@ import java.util.Set;
 @Table(name = "trabajador")
 @NamedQueries({
         @NamedQuery(name = "Trabajador.findByNameAndPass", 
-                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña")
+                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña"),
+        @NamedQuery(name = "Trabajador.findBySpeciality",
+                query = "SELECT t FROM Trabajador t WHERE t.especialidad ilike :especialidad")
 })
 public class Trabajador {
     @Id

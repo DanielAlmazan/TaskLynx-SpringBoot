@@ -30,6 +30,12 @@ public class TrabajadorServices implements ITrabajadorService {
     public Trabajador findByNameAndPass(String user, String pass) {
         return trabajadorDAO.findByNameAndPass(user, pass);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Trabajador> findBySpeciality(String speciality) {
+        return trabajadorDAO.findBySpeciality(speciality);
+    }
     
     @Override
     @Transactional
