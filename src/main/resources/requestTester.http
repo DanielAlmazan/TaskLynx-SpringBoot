@@ -1,8 +1,8 @@
 # File for testing the API 
 
 # Variables
-@port = 8443
-@host = https://localhost:{{port}}/api
+@port = 8080
+@host = http://localhost:{{port}}/api
 @idTrabajador2 = T002
 @idTrabajador21 = T0021
 @id = J001
@@ -24,6 +24,11 @@ GET {{host}}/trabajos/sinTrabajador
 # Get /trabajadores/{id}/trabajos/pendientes/prioridad
 
 GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/prioridad
+
+###
+
+# Get /trabajadores/especialidad/{especialidad}
+GET {{host}}/trabajadores/especialidad/electricidad
 
 ###
 
