@@ -8,15 +8,19 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("NonAsciiCharacters")
 @CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("/api")
@@ -35,7 +39,7 @@ public class TrabajadoresController {
             trabajadores = trabajadorService.findAll();
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -51,12 +55,12 @@ public class TrabajadoresController {
             trabajador = trabajadorService.findById(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajador == null) {
-            response.put("mensaje", "El trabajador con ID: ".concat(id.concat(" no existe en la base de datos")));
+            response.put("mensaje", "El trabajador con ID: \"" + id + "\" no existe en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trabajador, HttpStatus.OK);
@@ -71,12 +75,12 @@ public class TrabajadoresController {
             trabajador = trabajadorService.findByNameAndPass(nombre, contraseña);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajador == null) {
-            response.put("mensaje", "El trabajador con usuario: ".concat(nombre).concat(" y contraseña: ").concat(contraseña).concat(" no existe en la base de datos"));
+            response.put("mensaje", "El trabajador con usuario: " + nombre + " y contraseña: " + contraseña + " no existe en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(trabajador, HttpStatus.OK);
@@ -91,12 +95,12 @@ public class TrabajadoresController {
             trabajos = trabajadorService.findById(id).getTrabajos().stream().toList();
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajos.isEmpty()) {
-            response.put("mensaje", "No existen trabajos para el trabajador con ID: ".concat(id));
+            response.put("mensaje", "No existen trabajos para el trabajador con ID: " + id);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -112,12 +116,54 @@ public class TrabajadoresController {
             trabajosCompletados = trabajoService.findPendientesPorTrabajador(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: ".concat(id));
+            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+    }
+    
+    @GetMapping("/trabajadores/{id}/trabajos/pendientes/prioridad")
+    public ResponseEntity<?> indexOneTrabajosPendientesOrderByPrioridad(@PathVariable String id) {
+        List<Trabajo> trabajosCompletados;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajosCompletados = trabajoService.findPendientesPorTrabajadorOrderByPrioridadAsc(id);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajosCompletados.isEmpty()) {
+            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajosCompletados, HttpStatus.OK);
+    }
+    
+    @GetMapping("/trabajadores/{id}/trabajos/pendientes/{prioridad}")
+    public ResponseEntity<?> indexOneTrabajosPendientesByPrioridad(@PathVariable String id, @PathVariable BigDecimal prioridad) {
+        List<Trabajo> trabajosCompletados;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajosCompletados = trabajoService.findPendientesPorTrabajadorYPrioridad(id, prioridad);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajosCompletados.isEmpty()) {
+            response.put("mensaje", "No existen trabajos pendientes para el trabajador con ID: " + id);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -125,20 +171,36 @@ public class TrabajadoresController {
     }
 
     @GetMapping("/trabajadores/{id}/trabajos/completados")
-    public ResponseEntity<?> indexOneTrabajosCompletados(@PathVariable String id) {
+    public ResponseEntity<?> indexOneTrabajosCompletadosEntreFechas(
+            @PathVariable String id,
+            @RequestParam
+(required = false)
+ @DateTimeFormat() LocalDate fechaIni,
+            @RequestParam
+(required = false)
+ @DateTimeFormat() LocalDate fechaFin
+    ) {
         List<Trabajo> trabajosCompletados;
         Map<String, Object> response = new HashMap<>();
+        
+        if (fechaIni != null && fechaFin == null) {
+            fechaFin = LocalDate.now();
+        }
 
         try {
-            trabajosCompletados = trabajoService.findCompletadosPorTrabajador(id);
+            if (fechaIni == null && fechaFin != null) {
+                trabajosCompletados = trabajoService.findCompletadosPorTrabajador(id);
+            } else {
+                trabajosCompletados = trabajoService.findCompletadosPorTrabajadorEntreFechas(id, fechaIni, fechaFin);
+            }
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (trabajosCompletados.isEmpty()) {
-            response.put("mensaje", "No existen trabajos completados para el trabajador con ID: ".concat(id));
+            response.put("mensaje", "No existen trabajos completados para el trabajador con ID: " + id + " entre las fechas " + fechaIni + " y " + fechaFin);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -156,7 +218,7 @@ public class TrabajadoresController {
             newTrabajador = trabajadorService.save(trabajador);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la inserción en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -174,7 +236,7 @@ public class TrabajadoresController {
         if (showErrors(result, response)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         if (currentTrabajador == null) {
-            response.put("mensaje", "Error: no se pudo editar, el trabajador con ID: ".concat(id.concat(" no existe en la base de datos")));
+            response.put("mensaje", "Error: no se pudo editar, el trabajador con ID: " + id + " no existe en la base de datos");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
@@ -189,7 +251,7 @@ public class TrabajadoresController {
             updatedTrabajador = trabajadorService.save(currentTrabajador);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la actualización en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -208,7 +270,7 @@ public class TrabajadoresController {
             trabajadorService.delete(id);
         } catch (DataAccessException e) {
             response.put("mensaje", "Error al realizar la eliminación en la base de datos");
-            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -18,6 +18,10 @@ import java.time.LocalDate;
                 query = "SELECT t FROM Trabajo t WHERE t.codTrabajo = :codTrabajo AND t.idTrabajador IS NULL"),
         @NamedQuery(name = "Trabajo.findCompletadosPorTrabajadorEntreFechas",
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin BETWEEN :startDate AND :endDate"),
+        @NamedQuery(name = "Trabajo.findPendingByTrabajadorOrderByPrioridad",
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL ORDER BY t.prioridad ASC"),
+        @NamedQuery(name = "Trabajo.findPendingByTrabajadorAndPrioridad",
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL AND t.prioridad = :prioridad")
 })
 public class Trabajo {
     @Id

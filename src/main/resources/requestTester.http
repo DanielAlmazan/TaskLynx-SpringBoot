@@ -1,31 +1,172 @@
 # File for testing the API 
 
 # Variables
-@token = 
 @port = 8443
-@host = https://localhost:{{port}}
+@host = https://localhost:{{port}}/api
+@idTrabajador2 = T002
+@idTrabajador21 = T0021
+@id = J001
 
 ###
 
-GET {{host}}/api/trabajos/
+  # Get /trabajos
+
+GET {{host}}/trabajos
 
 ###
 
-# Crear un trabajo
+# Get  /trabajos/sinTrabajador
 
-POST {{host}}/api/trabajadores
-# Authorization: Bearer {{token}}
+GET {{host}}/trabajos/sinTrabajador
+
+###
+
+# Get /trabajadores/{id}/trabajos/pendientes/prioridad
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/prioridad
+
+###
+
+  # Get /trabajos/completados
+
+GET {{host}}/trabajos/completados
+
+###
+
+  # Get /trabajos/pendientes
+
+GET {{host}}/trabajos/pendientes
+
+###
+
+  # Get /trabajos/{id}
+
+GET {{host}}/trabajos/{{id}}
+
+###
+
+  # Post /trabajos   –   Not da error al insertar ID existente
+
+POST {{host}}/trabajos
 Content-Type: application/json
 
 {
-  "idTrabajador": "T004",
-  "dni": "",
-  "nombre": "Anaclet",
-  "apellidos": "Agent Secret",
-  "especialidad": "",
-  "contraseña": "",
-  "email": ""
+  "codTrabajo": "J0014",
+  "categoria": "Fontanería",
+  "descripcion": "Reparación de tuberías",
+  "fecIni": "2024-01-01",
+  "tiempo": null,
+  "prioridad": 4
 }
 
 ###
 
+  # Put /trabajos/{id}
+
+PUT {{host}}/trabajos/{{id}}
+Content-Type: application/json
+
+{
+  "codTrabajo": "J001",
+  "categoria": "Carpintería",
+  "descripcion": "Reparación de tuberías",
+  "fecIni": "2024-01-03",
+  "tiempo": null,
+  "prioridad": 2
+}
+
+###
+
+# Put /trabajos/asignar/{codTrabajo}/{idTrabajador}
+
+PUT {{host}}/trabajos/asignar/{{id}}/{{idTrabajador2}}
+
+###
+
+  # Put /trabajos/finalizar/{id}
+
+PUT {{host}}/trabajos/finalizar/{{id}}?fec_fin=2024-01-04&tiempo=2
+
+###
+
+# Put /trabajos/editarFechaFin/{id}
+
+PUT {{host}}/trabajos/editarFechaFin/{{id}}?fec_fin=2024-01-05
+
+###
+
+# Put /trabajos/editarTiempo/{id}
+
+PUT {{host}}/trabajos/editarTiempo/{{id}}?tiempo=3
+
+###
+
+# Post /trabajos/crearConTrabajador/{idTrabajador}
+
+POST {{host}}/trabajos/crearConTrabajador/{{idTrabajador2}}
+Content-Type: application/json
+
+{
+  "codTrabajo": "J01",
+  "categoria": "Carpintería",
+  "descripcion": "Reparación de tuberías",
+  "fecIni": "2024-01-03",
+  "prioridad": 2
+}
+
+###
+
+# Delete /trabajos/{id}/eliminar
+
+DELETE {{host}}/trabajos/J01/eliminar
+
+###
+
+# Post /trabajadores
+
+POST {{host}}/trabajadores
+Content-Type: application/json
+
+{
+  "idTrabajador": "T001",
+  "dni": "12345678A",
+  "nombre": "Pepe",
+  "apellidos": "García",
+  "especialidad": "Fontanería",
+  "contraseña": "123",
+  "email": "wefwefewf@ergerg.com"
+}
+
+###
+
+# List every task of a worker
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos
+
+###
+
+# Get /trabajadores/{id}/trabajos/pendientes/{prioridad}
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/2
+
+###
+
+# Get /trabajadores/{id}/trabajos/completados?fechaIni={fechaIni}&fechaFin={fechaFin}
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/completados?fechaIni=2024-01-01&fechaFin=2024-03-02
+
+###
+
+# List every completed task of a worker
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/completados
+
+###
+
+# List every pending task of a worker
+
+GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes
+
+
+
+###

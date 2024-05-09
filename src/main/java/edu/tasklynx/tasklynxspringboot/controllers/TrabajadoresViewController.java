@@ -56,28 +56,21 @@ public class TrabajadoresViewController {
     @RequestMapping(value="/create", method=RequestMethod.POST)
     public ModelAndView create(@Valid Trabajador trabajador, BindingResult result, Model mod) {
         ModelAndView model = new ModelAndView();
-        boolean exists = false;
         model.addObject("trabajador", trabajador);
 
         if (!result.hasErrors()) {
-            for (Trabajador t: trabajadorServices.findAll()) {
-                if (t.getIdTrabajador().equals(trabajador.getIdTrabajador())) {
-                    exists = true;
-                    break;
-                }
+            if (trabajadorServices.findById(trabajador.getIdTrabajador()) != null) {
+                model.addObject("titulo", "Error");
+                model.addObject("mensaje", "El trabajador ya existe.");
+                return model;
             }
 
             model.setViewName("ready");
             model.addObject("page", "trabajadores");
 
-            if (!exists) {
-                trabajadorServices.save(trabajador);
-                model.addObject("titulo", "Trabajador añadido");
-                model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
-            } else {
-                model.addObject("titulo", "Error");
-                model.addObject("mensaje", "El trabajador ya existe.");
-            }
+            trabajadorServices.save(trabajador);
+            model.addObject("titulo", "Trabajador añadido");
+            model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
         } else {
             model.setViewName("trabajadores/trabajadoresCrear");
             model.addObject("titulo", "Error");

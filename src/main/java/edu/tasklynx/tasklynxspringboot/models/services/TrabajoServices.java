@@ -5,8 +5,10 @@ import edu.tasklynx.tasklynxspringboot.models.dao.ITrabajoDAO;
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,6 +35,12 @@ public class TrabajoServices implements ITrabajoService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Trabajo> findPendientes() {
+        return trabajoDAO.findByFecFinIsNull();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Trabajo> findTrabajosSinTrabajador() {
         return trabajoDAO.findByIdTrabajadorIsNull();
     }
@@ -41,12 +49,6 @@ public class TrabajoServices implements ITrabajoService {
     @Transactional(readOnly = true)
     public List<Trabajo> findCompletados() {
         return trabajoDAO.findByFecFinIsNotNull();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Trabajo> findPendientes() {
-        return trabajoDAO.findByFecFinIsNull();
     }
 
     @Override
@@ -67,13 +69,13 @@ public class TrabajoServices implements ITrabajoService {
     }
 
     @Override
-    public List<Trabajo> findPendientesPorTrabajadorOrderByPrioridad(String trabajador) {
-        return trabajoDAO.findByIdTrabajadorIdTrabajadorAndFecFinIsNullOrderByCategoria(trabajador);
+    public List<Trabajo> findPendientesPorTrabajadorOrderByPrioridadAsc(String trabajador) {
+        return trabajoDAO.findPendingByTrabajadorOrderByPrioridad(trabajador);
     }
 
     @Override
     public List<Trabajo> findPendientesPorTrabajadorYPrioridad(String trabajador, BigDecimal prioridad) {
-        return trabajoDAO.findByIdTrabajadorIdTrabajadorAndFecFinIsNullAndPrioridad(trabajador, prioridad);
+        return trabajoDAO.findPendingByTrabajadorAndPrioridad(trabajador, prioridad);
     }
 
     @Override
@@ -84,29 +86,14 @@ public class TrabajoServices implements ITrabajoService {
 
     @Override
     @Transactional
-    public Trabajo asignarTrabajo(String codTrabajo, String idTrabajador) {
-        // TODO: Implement this method on the TrabajoController
-        Trabajo trabajo = trabajoDAO.findByIdAndUnassigned(codTrabajo);
-
-        if (trabajo == null) {
-            throw new RuntimeException("Trabajo no encontrado o ya asignado");
-        }
-
-        Trabajador trabajador = trabajadorDAO.findById(idTrabajador).orElseThrow(() -> new RuntimeException("Trabajador no encontrado"));
-
-        if (!trabajo.getCategoria().equals(trabajador.getEspecialidad())) {
-            throw new RuntimeException("La categoría del trabajo y la especialidad del trabajador no coinciden");
-        }
-
-        trabajo.setIdTrabajador(trabajador);
-        return trabajoDAO.save(trabajo);
-    }
-
-    @Override
-    @Transactional
     public Trabajo finalizarTrabajo(String id, LocalDate fec_fin, BigDecimal tiempo) {
-        // TODO: Implement this method on the TrabajoController
-        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new RuntimeException("Trabajo no encontrado"));
+        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow();
+
+        if (trabajo.getIdTrabajador() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El trabajo no tiene un trabajador asignado");
+        }
+
+        System.out.println(trabajo.getIdTrabajador());
 
         fec_fin = validateDate(trabajo, fec_fin);
 
@@ -121,9 +108,29 @@ public class TrabajoServices implements ITrabajoService {
 
     @Override
     @Transactional
+    public Trabajo asignarTrabajo(String codTrabajo, String idTrabajador) {
+        Trabajo trabajo = trabajoDAO.findById(codTrabajo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado"));
+        
+        if (trabajo.getIdTrabajador() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El trabajo ya tiene un trabajador asignado");
+        }
+
+        Trabajador trabajador = trabajadorDAO.findById(idTrabajador)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajador no encontrado"));
+
+        if (!trabajo.getCategoria().equals(trabajador.getEspecialidad())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La categoría del trabajo y la especialidad del trabajador no coinciden");
+        }
+
+        trabajo.setIdTrabajador(trabajador);
+        return trabajoDAO.save(trabajo);
+    }
+
+    @Override
+    @Transactional
     public Trabajo editarFechaFin(String id, LocalDate fec_fin) {
-        // TODO: Implement this method on the TrabajoController
-        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new RuntimeException("Trabajo no encontrado"));
+        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado"));
 
         fec_fin = validateDate(trabajo, fec_fin);
 
@@ -144,11 +151,11 @@ public class TrabajoServices implements ITrabajoService {
         }
 
         if (fec_fin.isBefore(trabajo.getFecIni())) {
-            throw new RuntimeException("La fecha de finalización no puede ser menor a la fecha de inicio");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de finalización no puede ser menor a la fecha de inicio");
         }
 
         if (fec_fin.isAfter(LocalDate.now())) {
-            throw new RuntimeException("La fecha de finalización no puede ser mayor a la fecha actual");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de finalización no puede ser mayor a la fecha actual");
         }
 
         return fec_fin;
@@ -157,8 +164,7 @@ public class TrabajoServices implements ITrabajoService {
     @Override
     @Transactional
     public Trabajo editarTiempo(String id, BigDecimal tiempo) {
-        // TODO: Implement this method on the TrabajoController
-        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new RuntimeException("Trabajo no encontrado"));
+        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado"));
 
         final BigDecimal tiempoMaximo = BigDecimal.valueOf(trabajo.getFecIni().until(trabajo.getFecFin()).getDays() * 8L);
         tiempo = validateTime(tiempo, tiempoMaximo);
@@ -181,19 +187,18 @@ public class TrabajoServices implements ITrabajoService {
         }
 
         if (tiempo.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("El tiempo no puede ser menor o igual a 0");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tiempo no puede ser menor o igual a 0");
         }
 
         if (tiempo.compareTo(tiempoMaximo) > 0) {
-            throw new RuntimeException("El tiempo no puede ser mayor a 8 horas por día trabajado");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tiempo no puede ser mayor a 8 horas por día trabajado");
         }
         return tiempo;
     }
 
     @Override
     public Trabajo crearTrabajoConTrabajador(Trabajo trabajo, String idTrabajador) {
-        // TODO: Implement this method on the TrabajoController
-        Trabajador trabajador = trabajadorDAO.findById(idTrabajador).orElseThrow(() -> new RuntimeException("Trabajador no encontrado"));
+        Trabajador trabajador = trabajadorDAO.findById(idTrabajador).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajador no encontrado"));
 
         trabajo.setIdTrabajador(trabajador);
 
