@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
+    List<Trabajo> findAllByFecFinIsNotNull();
+    List<Trabajo> findAllByFecFinIsNull();
     List<Trabajo> findCompletaByTrabajador(@Param("idTrabajador") String id);
     List<Trabajo> findPendienteByTrabajador(@Param("idTrabajador") String id);
     // Trabajo findByCodTrabajoAndIdTrabajadorIsNull(String id);
@@ -17,7 +19,6 @@ public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
     List<Trabajo> findByIdTrabajadorIsNull();
     List<Trabajo> findByFecFinIsNull();
     List<Trabajo> findByFecFinIsNotNull();
-    List<Trabajo> findByIdTrabajadorIdTrabajadorAndFecFinIsNullOrderByCategoria(String idTrabajador);
-    List<Trabajo> findByIdTrabajadorIdTrabajadorAndFecFinIsNullAndPrioridad(String idTrabajador, BigDecimal prioridad);
+    List<Trabajo> findPendingByTrabajadorOrderByPrioridad(String idTrabajador);
+    List<Trabajo> findPendingByTrabajadorAndPrioridad(String idTrabajador, BigDecimal prioridad);
 }
-// findCompletaByTrabajador, findPendienteByTrabajador, dByCodTrabajoAndIdTrabajadorIsNull, IdAndUnassigned, findCompletadosPorTrabajadorEntreFechas, findByIdTrabajadorIsNull, findByFecFinIsNull, findByFecFinIsNotNull, findByIdTrabajadorIdTrabajadorAndFecFinIsNullOrderByCategoria, findByIdTrabajadorIdTrabajadorAndFecFinIsNullAndPrioridad

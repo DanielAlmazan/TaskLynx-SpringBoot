@@ -65,33 +65,25 @@ public class TrabajadoresViewController {
     @RequestMapping(value="/create", method=RequestMethod.POST)
     public ModelAndView create(@Valid Trabajador trabajador, BindingResult result, Model mod) {
         ModelAndView model = new ModelAndView();
-        boolean exists = false;
         model.addObject("trabajador", trabajador);
 
         if (!result.hasErrors()) {
-            for (Trabajador t: trabajadorServices.findAll()) {
-                if (t.getIdTrabajador().equals(trabajador.getIdTrabajador())) {
-                    exists = true;
-                    break;
-                }
+            if (trabajadorServices.findById(trabajador.getIdTrabajador()) != null) {
+                model.addObject("titulo", "Error");
+                model.addObject("mensaje", "El trabajador ya existe.");
+                return model;
             }
 
-            if (!exists) {
-                model.setViewName("ready");
-                trabajadorServices.save(trabajador);
-                model.addObject("titulo", "Trabajador añadido");
-                model.addObject("page", "trabajadores");
-                model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
-            } else {
-                model.setViewName("trabajadores/trabajadoresForm");
-                model.addObject("titulo", "Nuevo trabajado");
-                model.addObject("error", "Error: ");
-                model.addObject("mensajeError", "El trabajador con código '" + trabajador.getIdTrabajador() + "' ya existe.");
-            }
+            model.setViewName("ready");
+            model.addObject("page", "trabajadores");
+
+            trabajadorServices.save(trabajador);
+            model.addObject("titulo", "Trabajador añadido");
+            model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
         } else {
-            model.setViewName("trabajadores/trabajadoresForm");
-            model.addObject("titulo", "Nuevo trabajador");
-            model.addObject("error", "Errores: ");
+            model.setViewName("trabajadores/trabajadoresCrear");
+            model.addObject("titulo", "Error");
+            model.addObject("mensaje", "Ha habido un error al añadir el trabajador.");
         }
 
         addAtributes(mod);
