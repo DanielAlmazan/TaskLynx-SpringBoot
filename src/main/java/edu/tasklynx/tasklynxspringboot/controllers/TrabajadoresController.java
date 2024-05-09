@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("NonAsciiCharacters")
-@CrossOrigin(origins = { "*" })
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/api")
 public class TrabajadoresController {
@@ -103,6 +104,28 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // Devuelve una lista de trabajadores por especialidad
+    @GetMapping("/trabajadores/especialidad/{especialidad}")
+    public ResponseEntity<?> indexByEspecialidad(@PathVariable String especialidad) {
+        List<Trabajador> trabajadores;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajadores = trabajadorService.findBySpeciality(especialidad);
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (trabajadores.isEmpty()) {
+            response.put("mensaje", "No existen trabajadores con la especialidad: " + especialidad);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(trabajadores, HttpStatus.OK);
+    }
+
     // Devuelve los trabajos de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos")
     public ResponseEntity<?> indexOneTrabajos(@PathVariable String id) {
@@ -142,7 +165,7 @@ public class TrabajadoresController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
     @GetMapping("/trabajadores/{id}/trabajos/pendientes/prioridad")
     public ResponseEntity<?> indexOneTrabajosPendientesOrderByPrioridad(@PathVariable String id) {
         List<Trabajo> trabajosPendientes;
@@ -161,7 +184,7 @@ public class TrabajadoresController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
     @GetMapping("/trabajadores/{id}/trabajos/pendientes/{prioridad}")
     public ResponseEntity<?> indexOneTrabajosPendientesByPrioridad(@PathVariable String id, @PathVariable BigDecimal prioridad) {
         List<Trabajo> trabajosPendientes;
@@ -193,7 +216,7 @@ public class TrabajadoresController {
     ) {
         List<Trabajo> trabajosCompletados;
         Map<String, Object> response = new HashMap<>();
-        
+
         if (fechaIni != null && fechaFin == null) {
             fechaFin = LocalDate.now();
         }

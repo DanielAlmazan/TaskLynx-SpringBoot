@@ -29,6 +29,11 @@ GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/prioridad
 
 ###
 
+# Get /trabajadores/especialidad/{especialidad}
+GET {{host}}/trabajadores/especialidad/electricidad
+
+###
+
   # Get /trabajos/completados
 
 GET {{host}}/trabajos/completados
