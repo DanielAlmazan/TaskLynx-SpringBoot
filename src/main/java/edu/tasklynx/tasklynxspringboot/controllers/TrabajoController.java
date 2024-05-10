@@ -278,7 +278,7 @@ public class TrabajoController {
         }
 
         response.put("error", true);
-        response.put("errorMessage", trabajo);
+        response.put("result", trabajo);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

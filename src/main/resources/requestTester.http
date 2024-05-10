@@ -1,8 +1,8 @@
 # File for testing the API 
 
 # Variables
-# SSL @port = 8443
-# SSL @host = https://localhost:{{port}}/api
+### SSL @port = 8443
+### SSL @host = https://localhost:{{port}}/api
 @port = 8080
 @host = http://localhost:{{port}}/api
 @idTrabajador2 = T002
@@ -65,7 +65,7 @@ GET {{host}}/trabajos/{{id}}/trabajador
 ###
 
   # Post /trabajos   –   Not da error al insertar ID existente
-
+  # -- FALLA --
 POST {{host}}/trabajos
 Content-Type: application/json
 
@@ -75,13 +75,14 @@ Content-Type: application/json
   "descripcion": "Reparación de tuberías",
   "fecIni": "2024-01-01",
   "tiempo": null,
+  "idTrabajador": null,
   "prioridad": 4
 }
 
 ###
 
   # Put /trabajos/{id}
-
+  # -- FALLA --
 PUT {{host}}/trabajos/{{id}}
 Content-Type: application/json
 
@@ -120,21 +121,6 @@ PUT {{host}}/trabajos/editarTiempo/{{id}}?tiempo=3
 
 ###
 
-# Post /trabajos/crearConTrabajador/{idTrabajador}
-
-POST {{host}}/trabajos/crearConTrabajador/{{idTrabajador2}}
-Content-Type: application/json
-
-{
-  "codTrabajo": "J01",
-  "categoria": "Carpintería",
-  "descripcion": "Reparación de tuberías",
-  "fecIni": "2024-01-03",
-  "prioridad": 2
-}
-
-###
-
 # Delete /trabajos/{id}/eliminar
 
 DELETE {{host}}/trabajos/J01/eliminar
@@ -148,7 +134,7 @@ GET {{host}}/trabajadores
 ###
 
 # Post /trabajadores
-
+  # -- FALLA --
 POST {{host}}/trabajadores
 Content-Type: application/json
 
