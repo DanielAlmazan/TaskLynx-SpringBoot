@@ -54,7 +54,6 @@ public class Trabajo {
     private BigDecimal tiempo;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
     @JoinColumn(name = "id_trabajador")
     private Trabajador idTrabajador;
 

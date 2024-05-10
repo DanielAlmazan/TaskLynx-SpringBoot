@@ -135,7 +135,7 @@ public class TrabajoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/trabajos")
+    @PostMapping(value = "/trabajos", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@Valid @RequestBody Trabajo trabajo, BindingResult result) {
         Trabajo trabajoNew;
