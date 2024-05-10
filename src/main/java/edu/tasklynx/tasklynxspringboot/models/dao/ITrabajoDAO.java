@@ -1,5 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.models.dao;
 
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
     List<Trabajo> findAllByFecFinIsNull();
     List<Trabajo> findCompletaByTrabajador(@Param("idTrabajador") String id);
     List<Trabajo> findPendienteByTrabajador(@Param("idTrabajador") String id);
-    // Trabajo findByCodTrabajoAndIdTrabajadorIsNull(String id);
+    Trabajador findTrabajadorByCodTrabajo(@Param("codTrabajo") String codTrabajo);
     Trabajo findByIdAndUnassigned(@Param("codTrabajo") String id);
     List<Trabajo> findCompletadosPorTrabajadorEntreFechas(@Param("idTrabajador") String idTrabajador, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     List<Trabajo> findByIdTrabajadorIsNull();

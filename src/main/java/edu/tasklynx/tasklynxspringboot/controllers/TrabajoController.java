@@ -1,5 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.controllers;
 
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 import edu.tasklynx.tasklynxspringboot.models.services.ITrabajoService;
 import jakarta.validation.Valid;
@@ -105,6 +106,31 @@ public class TrabajoController {
 
         response.put("error", false);
         response.put("result", trabajo);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @GetMapping("/trabajos/{id}/trabajador")
+    public ResponseEntity<?> showTrabajadorByCodTrabajo(@PathVariable String id) {
+        Trabajador trabajador;
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            trabajador = trabajoService.findTrabajadorByCodTrabajo(id);
+        } catch (DataAccessException e) {
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        if (trabajador == null) {
+            response.put("error", true);
+            response.put("errorMessage", "El trabajo con ID '" + id + "' no tiene un trabajador asignado");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        
+        response.put("error", false);
+        response.put("result", trabajador);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

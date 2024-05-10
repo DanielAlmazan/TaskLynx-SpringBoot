@@ -79,6 +79,11 @@ public class TrabajoServices implements ITrabajoService {
     }
 
     @Override
+    public Trabajador findTrabajadorByCodTrabajo(String codTrabajo) {
+        return trabajoDAO.findTrabajadorByCodTrabajo(codTrabajo);
+    }
+
+    @Override
     @Transactional
     public Trabajo save(Trabajo trabajo) {
         return trabajoDAO.save(trabajo);

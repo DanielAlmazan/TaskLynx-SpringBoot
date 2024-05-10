@@ -107,3 +107,20 @@ main {
 h1, h2, h3, h4, h5, h6 {
     font-variant: small-caps;
 }
+
+.errorblock {
+    background-color: #1e1e24;
+    border-radius: .5rem;
+    border: .1rem solid #fe7878;
+    color: #fe7878;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+
+    li {
+        list-style-type: none;
+    }
+
+    li::before, p::before {
+        content: "❗";
+    }
+}

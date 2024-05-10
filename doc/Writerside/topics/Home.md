@@ -1,3 +1,15 @@
+<!-- Links references -->
+
+[MiguelColl]: https://github.com/MiguelColl
+
+[LtVish]: https://github.com/LtVish
+
+[DanielAlmazan]: https://github.com/DanielAlmazan
+
+[HotelNest]: https://github.com/DanielAlmazan/hotel-nest
+[TaskLynxFX]: https://github.com/DanielAlmazan/TaskLynx-JavaFX
+
+
 ![TaskLynx-API-oval-logo.svg](TaskLynx-API-oval-logo.svg){width=300}
 
 # TaskLynx – API – Home
@@ -40,6 +52,8 @@ TaskLynx Api es una API REST que permite la comunicación entre TaskLynx Busines
     trabajador ||--o{ trabajo : "id_trabajador"
     @enduml
 ```
+
+
 
 ## Diagrama de Clases
 
@@ -231,3 +245,20 @@ TrabajoViewController       "1" *-[#595959,plain]-> "trabajadorServices\n1" Trab
 TrabajoViewController       "1" *-[#595959,plain]-> "trabajoServices\n1" TrabajoServices       
 @enduml
 ```
+
+## Authors
+
+### TRABAJADOR CRUD:
+![Aitor Moreno Iborra](https://avatars.githubusercontent.com/u/119342012?v=4)
+
+[Aitor Moreno Iborra][LtVish]
+
+### TRABAJO CRUD:
+[Miguel Collado][MiguelColl]
+
+![Miguel Collado](https://avatars.githubusercontent.com/u/114687157?v=4)
+
+### API Development:
+![Daniel Enrique Almazán Sellés](https://avatars.githubusercontent.com/u/114589538?v=4)
+
+[Daniel Enrique Almazán Sellés][DanielAlmazan]

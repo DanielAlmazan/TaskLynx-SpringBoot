@@ -21,7 +21,9 @@ import java.time.LocalDate;
         @NamedQuery(name = "Trabajo.findPendingByTrabajadorOrderByPrioridad",
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL ORDER BY t.prioridad ASC"),
         @NamedQuery(name = "Trabajo.findPendingByTrabajadorAndPrioridad",
-                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL AND t.prioridad = :prioridad")
+                query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL AND t.prioridad = :prioridad"),
+        @NamedQuery(name = "Trabajo.findTrabajadorByCodTrabajo",
+                query = "SELECT t.idTrabajador FROM Trabajo t WHERE t.codTrabajo = :codTrabajo"),
 })
 public class Trabajo {
     @Id

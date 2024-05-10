@@ -29,6 +29,12 @@ GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/prioridad
 
 ###
 
+# Get /trabajadores/{id}
+
+GET {{host}}/trabajadores/{{idTrabajador2}}
+
+###
+
 # Get /trabajadores/especialidad/{especialidad}
 GET {{host}}/trabajadores/especialidad/electricidad
 
@@ -49,6 +55,12 @@ GET {{host}}/trabajos/pendientes
   # Get /trabajos/{id}
 
 GET {{host}}/trabajos/{{id}}
+
+###
+
+# Get /trabajos/{id}/trabajador
+
+GET {{host}}/trabajos/{{id}}/trabajador
 
 ###
 
@@ -126,6 +138,12 @@ Content-Type: application/json
 # Delete /trabajos/{id}/eliminar
 
 DELETE {{host}}/trabajos/J01/eliminar
+
+###
+
+# Get /trabajadores
+
+GET {{host}}/trabajadores
 
 ###
 
