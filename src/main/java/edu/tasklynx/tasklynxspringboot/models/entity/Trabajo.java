@@ -123,4 +123,18 @@ public class Trabajo {
     public void setPrioridad(BigDecimal prioridad) {
         this.prioridad = prioridad;
     }
+
+    @Override
+    public String toString() {
+        return "Trabajo{" +
+                "codTrabajo='" + codTrabajo + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", fecIni=" + fecIni +
+                ", fecFin=" + fecFin +
+                ", tiempo=" + tiempo +
+                ", idTrabajador=" + idTrabajador +
+                ", prioridad=" + prioridad +
+                '}';
+    }
 }

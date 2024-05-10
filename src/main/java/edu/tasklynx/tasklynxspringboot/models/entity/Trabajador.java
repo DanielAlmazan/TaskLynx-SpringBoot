@@ -139,4 +139,16 @@ public class Trabajador {
         this.trabajos = trabajos;
     }
 
+    @Override
+    public String toString() {
+        return "Trabajador{" +
+                "idTrabajador='" + idTrabajador + '\'' +
+                ", dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", especialidad='" + especialidad + '\'' +
+                ", contraseña='" + contraseña + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
