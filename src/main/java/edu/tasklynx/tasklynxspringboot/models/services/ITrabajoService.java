@@ -1,5 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.models.services;
 
+import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajo;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ public interface ITrabajoService {
     List<Trabajo> findPendientesPorTrabajador(String idTrabajador);
     List<Trabajo> findPendientesPorTrabajadorOrderByPrioridadAsc(String trabajador);
     List<Trabajo> findPendientesPorTrabajadorYPrioridad(String trabajador, BigDecimal prioridad);
+    Trabajador findTrabajadorByCodTrabajo(String codTrabajo);
     public Trabajo save(Trabajo trabajo);
     Trabajo asignarTrabajo(String codTrabajo, String idTrabajador);
     Trabajo finalizarTrabajo(String id, LocalDate fec_fin, BigDecimal tiempo);
