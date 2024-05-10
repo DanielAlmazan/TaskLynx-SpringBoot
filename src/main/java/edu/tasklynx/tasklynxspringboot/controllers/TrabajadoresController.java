@@ -113,17 +113,15 @@ public class TrabajadoresController {
         try {
             trabajadores = trabajadorService.findBySpeciality(especialidad);
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al realizar la consulta en la base de datos");
-            response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (trabajadores.isEmpty()) {
-            response.put("mensaje", "No existen trabajadores con la especialidad: " + especialidad);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        response.put("error", false);
+        response.put("result", trabajadores);
 
-        return new ResponseEntity<>(trabajadores, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve los trabajos de un trabajador
@@ -141,9 +139,9 @@ public class TrabajadoresController {
         }
 
         response.put("error", false);
-        response.put("errorMessage", trabajos);
+        response.put("result", trabajos);
 
-        return new ResponseEntity<>(trabajos, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Devuelve los trabajos pendientes de un trabajador
@@ -161,7 +159,7 @@ public class TrabajadoresController {
         }
 
         response.put("error", false);
-        response.put("errorMessage", trabajosPendientes);
+        response.put("result", trabajosPendientes);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -180,7 +178,7 @@ public class TrabajadoresController {
         }
 
         response.put("error", false);
-        response.put("errorMessage", trabajosPendientes);
+        response.put("result", trabajosPendientes);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -199,7 +197,7 @@ public class TrabajadoresController {
         }
 
         response.put("error", false);
-        response.put("errorMessage", trabajosPendientes);
+        response.put("result", trabajosPendientes);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -234,7 +232,7 @@ public class TrabajadoresController {
         }
 
         response.put("error", false);
-        response.put("errorMessage", trabajosCompletados);
+        response.put("result", trabajosCompletados);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

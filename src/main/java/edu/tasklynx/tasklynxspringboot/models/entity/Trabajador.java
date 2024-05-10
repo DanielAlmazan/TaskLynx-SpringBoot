@@ -1,5 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -53,7 +54,7 @@ public class Trabajador {
     private String email;
 
     @OneToMany(mappedBy = "idTrabajador")
-    @JsonManagedReference
+    @JsonBackReference
     private Set<Trabajo> trabajos = new LinkedHashSet<>();
 
     public Trabajador() {
