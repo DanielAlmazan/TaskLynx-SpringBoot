@@ -14,10 +14,12 @@ import java.util.Set;
 @Table(name = "trabajador")
 @NamedQueries({
         @NamedQuery(name = "Trabajador.findByNameAndPass", 
-                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña"),
-        @NamedQuery(name = "Trabajador.findBySpeciality",
-                query = "SELECT t FROM Trabajador t WHERE t.especialidad ilike :especialidad")
+                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña")
 })
+@NamedNativeQuery(name = "Trabajador.findBySpeciality",
+        query = "SELECT * FROM Trabajador t WHERE unaccent(t.especialidad) ilike :especialidad",
+        resultClass = Trabajador.class
+)
 public class Trabajador {
     @Id
     @NotEmpty(message = "El campo Id no puede estar vacío")

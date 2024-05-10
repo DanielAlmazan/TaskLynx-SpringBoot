@@ -36,7 +36,7 @@ GET {{host}}/trabajadores/{{idTrabajador2}}
 ###
 
 # Get /trabajadores/especialidad/{especialidad}
-GET {{host}}/trabajadores/especialidad/electricidad
+GET {{host}}/trabajadores/especialidad/fontaneria
 
 ###
 
@@ -70,7 +70,7 @@ POST {{host}}/trabajos
 Content-Type: application/json
 
 {
-  "codTrabajo": "J0014",
+  "codTrabajo": "J017",
   "categoria": "Fontanería",
   "descripcion": "Reparación de tuberías",
   "fecIni": "2024-01-01",
@@ -87,12 +87,13 @@ PUT {{host}}/trabajos/{{id}}
 Content-Type: application/json
 
 {
-  "codTrabajo": "J001",
-  "categoria": "Carpintería",
+  "codTrabajo": "J0014",
+  "categoria": "Fontanería",
   "descripcion": "Reparación de tuberías",
-  "fecIni": "2024-01-03",
+  "fecIni": "2024-01-01",
   "tiempo": null,
-  "prioridad": 2
+  "idTrabajador": null,
+  "prioridad": 3
 }
 
 ###
@@ -143,7 +144,7 @@ Content-Type: application/json
   "dni": "12345678A",
   "nombre": "Pepe",
   "apellidos": "García",
-  "especialidad": "Fontanería",
+  "especialidad": "Fontaneria",
   "contraseña": "123",
   "email": "wefwefewf@ergerg.com"
 }
