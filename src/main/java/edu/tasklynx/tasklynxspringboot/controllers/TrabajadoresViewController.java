@@ -2,6 +2,7 @@ package edu.tasklynx.tasklynxspringboot.controllers;
 
 import edu.tasklynx.tasklynxspringboot.models.entity.Trabajador;
 import edu.tasklynx.tasklynxspringboot.models.services.TrabajadorServices;
+import edu.tasklynx.tasklynxspringboot.models.services.TrabajoServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ public class TrabajadoresViewController {
 
     @Autowired
     TrabajadorServices trabajadorServices = new TrabajadorServices();
+    @Autowired
+    private TrabajoServices trabajoServices;
 
     // Enlaza a la página principal de trabajadores
     @GetMapping("")
@@ -117,6 +120,12 @@ public class TrabajadoresViewController {
     public ModelAndView delete(@RequestParam String idTrabajador) {
         ModelAndView model = new ModelAndView();
         model.setViewName("ready");
+        if(!trabajoServices.findPendientesPorTrabajador(idTrabajador).isEmpty()) {
+            model.addObject("titulo", "Error");
+            model.addObject("page", "trabajadores");
+            model.addObject("mensaje", "El trabajador tiene trabajos asociados y no se puede eliminar.");
+            return model;
+        }
         model.addObject("titulo", "Trabajador eliminado");
         model.addObject("page", "trabajadores");
         model.addObject("mensaje", "El trabajador ha sido eliminado correctamente.");

@@ -97,6 +97,23 @@ Content-Type: application/json
 
 ###
 
+  # Put /trabajadores/{id}
+  # -- FALLA --
+PUT {{host}}/trabajadores/T001
+Content-Type: application/json
+
+{
+  "idTrabajador": "T001",
+  "dni": "12345678A",
+  "nombre": "Pepe",
+  "apellidos": "Gomez",
+  "especialidad": "Fontanería",
+  "contraseña": "123",
+  "email": "wefwefesadf.com"
+}
+
+###
+
 # Put /trabajos/asignar/{codTrabajo}/{idTrabajador}
 
 PUT {{host}}/trabajos/asignar/{{id}}/{{idTrabajador2}}
@@ -124,6 +141,12 @@ PUT {{host}}/trabajos/editarTiempo/{{id}}?tiempo=3
 # Delete /trabajos/{id}/eliminar
 
 DELETE {{host}}/trabajos/J01/eliminar
+
+###
+
+# Delete /trabajadores/{id}/eliminar
+
+DELETE {{host}}/trabajadores/123/eliminar
 
 ###
 
