@@ -7,7 +7,7 @@ import java.util.List;
 public interface ITrabajadorService {
     List<Trabajador> findAll();
     Trabajador findById(String id);
-    Trabajador findByNameAndPass(String user, String pass);
+    Trabajador findByIdAndPass(String id, String pass);
     List<Trabajador> findBySpeciality(String speciality);
     Trabajador save(Trabajador trabajador);
     void delete(String id);

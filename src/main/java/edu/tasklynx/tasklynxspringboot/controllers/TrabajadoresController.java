@@ -78,14 +78,14 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Devuelve un trabajador por nombre y contraseña
-    @GetMapping("/trabajadores/{nombre}/{contraseña}")
-    public ResponseEntity<?> indexOneByUsuarioAndContraseña(@PathVariable String nombre, @PathVariable String contraseña) {
+    // Devuelve un trabajador por id y contraseña
+    @GetMapping("/trabajadores/{id}/{contraseña}")
+    public ResponseEntity<?> indexOneByIdAndContraseña(@PathVariable String id, @PathVariable String contraseña) {
         Trabajador trabajador;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajador = trabajadorService.findByNameAndPass(nombre, contraseña);
+            trabajador = trabajadorService.findByIdAndPass(id, contraseña);
         } catch (DataAccessException e) {
             response.put("error", true);
             response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
