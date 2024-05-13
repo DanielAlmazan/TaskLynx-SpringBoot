@@ -149,7 +149,7 @@ public class TrabajoController {
             response.put("error", true);
             errors.add("El trabajo con id '" + trabajo.getCodTrabajo() + "' ya existe en la base de datos");
             response.put("errorsList", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         try {
