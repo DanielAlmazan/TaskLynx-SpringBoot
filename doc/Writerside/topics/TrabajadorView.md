@@ -8,7 +8,7 @@
 
 ***
 
-## GET '/trabajadores/{id}'
+## GET '/trabajadores/:id'
 > Returns a view with the detailed information of a specific worker  
 > [Trabajadores/trabajadoresDetalle](http://localhost:8080/trabajadores/T001)
 

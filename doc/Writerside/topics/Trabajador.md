@@ -4,7 +4,7 @@
 > Returns all the workers in the database.  
 > If there are no workers, it will return an empty list.
 
-### Successful response example
+**Successful response example**
 ```json
 {
   "result": [
@@ -41,11 +41,11 @@
 
 ***
 
-## GET /api/trabajadores/{id}
+## GET /api/trabajadores/:id
 > Returns a worker by its ID.  
 > If the worker does not exist, it will return an error message.
 
-### Successful response example
+**Successful response example**
 ```json
 {
   "result": {
@@ -61,7 +61,7 @@
 }
 ```
 
-### Non-existent worker response example
+**Non-existent worker response example**
 ```json
 {
   "errorMessage": "El trabajador con ID: 'asdtg' no existe en la base de datos",
@@ -76,7 +76,7 @@
 > If there are any errors, it will return an error message with the list of errors.  
 > If the worker already exists, it will return an error message.
 
-### Successful body example
+**Successful body example**
 ```json
 {
   "idTrabajador": "T001",
@@ -89,7 +89,7 @@
 }
 ```
 
-### Successful response example
+**Successful response example**
 ```json
 {
   "result": {
@@ -105,7 +105,7 @@
 }
 ```
 
-### Error body example
+**Error body example**
 ```json
 {
   "idTrabajador": "T001",
@@ -118,7 +118,7 @@
 }
 ```
 
-### Error response example
+**Error response example**
 ```json
 {
   "errorsList": [
@@ -129,7 +129,7 @@
 }
 ```
 
-### Existing worker response example
+**Existing worker response example**
 ```json
 {
   "errorsList": "El trabajador ya existe",
@@ -139,12 +139,12 @@
 
 ***
 
-## PUT /api/trabajadores/{id}
+## PUT /api/trabajadores/:id
 > Update a worker by its ID. Returns the worker updated.  
 > If the worker does not exist, it will return an error message.  
 > If any of the fields are empty or invalid, it will return an error message with the list of errors.
 
-### Successful body example
+**Successful body example**
 ```json
 {
     "idTrabajador": "T001",
@@ -157,7 +157,7 @@
 }
 ```
 
-### Successful response example
+**Successful response example**
 ```json
 {
   "result": {
@@ -173,7 +173,7 @@
 }
 ```
 
-### Error body example
+**Error body example**
 ```json
 {
   "idTrabajador": "T001",
@@ -186,7 +186,7 @@
 }
 ```
 
-### Error response example
+**Error response example**
 ```json
 {
   "errorsList": [
@@ -197,7 +197,7 @@
 }
 ```
 
-### on-existent worker body example
+**Non-existent worker body example**
 ```json
 {
     "idTrabajador": "T999",
@@ -210,7 +210,7 @@
 }
 ```
 
-### Non-existent worker response example
+**Non-existent worker response example**
 ```json
 {
   "errorsList": [
@@ -222,18 +222,18 @@
 
 ***
 
-## DELETE /api/trabajadores/{id}/eliminar
+## DELETE /api/trabajadores/:id
 > Delete a worker by its ID. Returns a response without errors.  
 > If the worker does not exist, it will return an error message.
 
-### Successful response example
+**Successful response example**
 ```json
 {
   "error": false
 }
 ```
 
-### Non-existent worker response example
+**Non-existent worker response example**
 ```json
 {
   "errorMessage": "El trabajador con ID: 'asdtg' no existe en la base de datos",
