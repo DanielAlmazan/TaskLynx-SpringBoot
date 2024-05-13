@@ -340,7 +340,7 @@ public class TrabajadoresController {
     }
 
     // Elimina un trabajador
-    @DeleteMapping("/trabajadores/{id}/eliminar")
+    @DeleteMapping("/trabajadores/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete(@PathVariable String id) {
 
