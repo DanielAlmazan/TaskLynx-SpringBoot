@@ -55,29 +55,29 @@ public class TrabajadoresControllerIntegrationTest {
         ResponseEntity<String> response = restTemplate.getForEntity(URL + "/" + newTrabajador.getIdTrabajador(), String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
-    
+
     @Test
     @Order(3)
-    public void findByNameAndPassShouldFail() {
+    public void findByIdAndPassShouldFail() {
         ResponseEntity<String> response = restTemplate.getForEntity(
                 URL +
-                    "/" + newTrabajador.getNombre() +
-                    "/" + newTrabajador.getContraseña(),
+                        "/" + newTrabajador.getIdTrabajador() +
+                        "/" + newTrabajador.getContraseña(),
                 String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
-    
+
     @Test
     @Order(4)
     public void findBySpecialityShouldGetOne() {
         ResponseEntity<Map> response = restTemplate.getForEntity(
-                URL + "/especialidad/Carpintería",
+                URL + "/especialidad/Carpinteria",
                 Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(false, response.getBody().get("error"));
         assertEquals(1, ((List) response.getBody().get("result")).size());
     }
-    
+
 
     @Test
     @Order(3)
@@ -85,33 +85,23 @@ public class TrabajadoresControllerIntegrationTest {
         ResponseEntity<Map> response = restTemplate.postForEntity(URL, newTrabajador, Map.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(false, response.getBody().get("error"));
-        assertEquals("T800", ((Map) response.getBody().get("result")).get("idTrabajador"));
+        assertEquals(newTrabajador.getIdTrabajador(), ((Map) response.getBody().get("result")).get("idTrabajador"));
     }
 
     @Test
     @Order(4)
+    public void createShouldFail() {
+        ResponseEntity<String> response = restTemplate.postForEntity(URL, newTrabajador, String.class);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    @Order(5)
     public void findByIdSucceeds() {
         ResponseEntity<Map> response = restTemplate.getForEntity(URL, Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(false, response.getBody().get("error"));
         assertEquals(4, ((List) response.getBody().get("result")).size());
-    }
-
-    @Test
-    @Order(5)
-    public void createShouldFail() {
-        Trabajador newTrabajador = new Trabajador(
-                "80080080T",
-                "Arnaldo",
-                "Charcheneguer",
-                "sayonara@volvere.com",
-                "Dame tu ropa",
-                "Espacio-Tiempo"
-        );
-        newTrabajador.setIdTrabajador("T800");
-
-        ResponseEntity<String> response = restTemplate.postForEntity(URL, newTrabajador, String.class);
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test
@@ -136,7 +126,7 @@ public class TrabajadoresControllerIntegrationTest {
         assertEquals(false, response.getBody().get("error"));
         assertEquals("Arnoldo", ((Map) response.getBody().get("result")).get("nombre"));
     }
-    
+
     @Test
     @Order(8)
     public void updateShouldFail() {
