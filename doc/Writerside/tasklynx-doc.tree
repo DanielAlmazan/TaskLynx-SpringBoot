@@ -8,6 +8,8 @@
 
     <toc-element topic="Home.md">
         <toc-element topic="Trabajo.md"/>
+        <toc-element topic="Trabajador.md"/>
+        <toc-element topic="TrabajadorView.md"/>
         <toc-element topic="Tutorial.md"/>
     </toc-element>
 </instance-profile>

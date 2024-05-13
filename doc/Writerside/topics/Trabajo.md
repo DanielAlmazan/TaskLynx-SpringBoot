@@ -4,7 +4,7 @@
 > Returns all the tasks in the database.  
 > If there are no tasks, it will return an empty list.
 
-### Successful response example
+**Successful response example**
 
 ```json
 {
@@ -70,11 +70,11 @@
 
 ***
 
-## GET /api/trabajos/{id}
+## GET /api/trabajos/:id
 > Returns a task by its ID.  
 > If the task does not exist, it will return an error message.
 
-### Successful response example:
+**Successful response example:**
 >/api/trabajos/J001
 ```json
 {
@@ -92,7 +92,7 @@
 }
 ```
 
-### Non-existent worker response example:
+**Non-existent worker response example:**
 >/api/trabajos/J025
 ```json
 {
@@ -113,7 +113,7 @@
 > - tiempo: duration of the task
 > - idTrabajador: worker assigned
 
-### Successful body example
+**Successful body example**
 ```json
 {
   "codTrabajo": "J007",
@@ -124,7 +124,7 @@
 }
 ```
 
-### Response 
+**Response** 
 ```json
 {
   "result": {
@@ -141,7 +141,7 @@
 }
 ```
 
-### Other successful body example
+**Other successful body example**
 ```json
 {
   "codTrabajo": "J008",
@@ -163,7 +163,7 @@
 }
 ```
 
-### Response
+**Response**
 ```json
 {
   "result": {
@@ -188,7 +188,7 @@
 }
 ```
 
-### Error body example
+**Error body example**
 ```json
 {
   "codTrabajo": "J009",
@@ -197,7 +197,7 @@
 }
 ```
 
-### Response
+**Response**
 ```json
 {
   "errorsList": [
@@ -208,7 +208,7 @@
 }
 ```
 
-### Other error body example
+**Other error body example**
 ```json
 {
   "codTrabajo": "J008",
@@ -219,7 +219,7 @@
 }
 ```
 
-### Response
+**Response**
 ```json
 {
   "errorsList": [
@@ -231,12 +231,12 @@
 
 ***
 
-## PUT /api/trabajos/{id}
+## PUT /api/trabajos/:id
 > Update a task by its ID and returns the task updated.  
 > If the worker does not exist, it will return an error message.  
 > If any of the fields are empty or invalid, it will return an error message with the list of errors.
 
-### Successful body example, we add an assigned worker
+**Successful body example, we add an assigned worker**
 > /api/trabajos/J007
 ```json
 {
@@ -257,7 +257,7 @@
 }
 ```
 
-### Response
+**Response**
 ```json
 {
   "result": {
@@ -282,7 +282,7 @@
 }
 ```
 
-### Error body example
+**Error body example**
 > /api/trabajos/J020
 ```json
 {
@@ -294,7 +294,7 @@
 }
 ```
 
-### Response
+**Response**
 ```json
 {
   "errorsList": [
@@ -306,11 +306,11 @@
 
 ***
 
-## DELETE /api/trabajos/{id}
+## DELETE /api/trabajos/:id
 > Delete a task by its ID. Returns a response without errors.  
 > If the task does not exist, it will return an error message.
 
-### Successfull response example
+**Successfull response example**
 > /api/trabajos/J008
 ```json
 {
@@ -318,7 +318,7 @@
 }
 ```
 
-### Non-existent worker response example
+**Non-existent worker response example**
 > /api/trabajos/J020
 ```json
 {
