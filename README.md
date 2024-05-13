@@ -46,12 +46,6 @@ logging.level.org.hibernate.SQL=debug
 server.servlet.encoding.charset=UTF-8
 server.servlet.encoding.enabled=true
 server.servlet.encoding.force=true
-server.port=8443
-server.ssl.key-store=classpath:TLKey.p12
-server.ssl.key-store-password=
-server.ssl.key-alias=TLKey
-server.ssl.key-password=
-server.ssl.key-store-type=pkcs12
 ```
 
 ## Entity Relationship Diagram for tasklynxDB

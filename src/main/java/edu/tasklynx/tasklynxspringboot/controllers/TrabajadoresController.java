@@ -250,21 +250,21 @@ public class TrabajadoresController {
             response.put("error", true);
             errors.add("Ya existe un trabajador con el ID: " + trabajador.getIdTrabajador());
             response.put("errorsList", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         if (trabajadorService.existsByEmail(trabajador.getEmail())) {
             response.put("error", true);
             errors.add("Ya existe un trabajador con el email: " + trabajador.getEmail());
             response.put("errorsList", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         if (trabajadorService.existsByDni(trabajador.getDni())) {
             response.put("error", true);
             errors.add("Ya existe un trabajador con el DNI: " + trabajador.getDni());
             response.put("errorsList", errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         try {
@@ -304,7 +304,7 @@ public class TrabajadoresController {
                 response.put("error", true);
                 errors.add("Ya existe un trabajador con el DNI: " + trabajador.getDni());
                 response.put("errorsList", errors);
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
         }
 
@@ -313,7 +313,7 @@ public class TrabajadoresController {
                 response.put("error", true);
                 errors.add("Ya existe un trabajador con el email: " + trabajador.getEmail());
                 response.put("errorsList", errors);
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
         }
 
