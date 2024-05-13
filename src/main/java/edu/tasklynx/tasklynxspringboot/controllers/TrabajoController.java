@@ -144,6 +144,14 @@ public class TrabajoController {
 
         if (checkErrors(result, response, errors)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
+        trabajoNew = trabajoService.findById(trabajo.getCodTrabajo());
+        if (trabajoNew != null) {
+            response.put("error", true);
+            errors.add("El trabajo con id '" + trabajo.getCodTrabajo() + "' ya existe en la base de datos");
+            response.put("errorsList", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
         try {
             trabajoNew = trabajoService.save(trabajo);
         } catch (DataAccessException e) {
@@ -282,35 +290,19 @@ public class TrabajoController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
-   /* @PostMapping("/trabajos/crearConTrabajador/{idTrabajador}")
-    public ResponseEntity<?> crearTrabajoConTrabajador(
-            @Valid @RequestBody Trabajo trabajo,
-            @PathVariable String idTrabajador
-            //BindingResult result
-    ) {
-        Trabajo trabajoNew;
-        Map<String, Object> response = new HashMap<>();
 
-        //if (checkErrors(result, response)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-
-        try {
-            trabajoNew = trabajoService.crearTrabajoConTrabajador(trabajo, idTrabajador);
-        } catch (ResponseStatusException e) {
-            response.put("mensaje", "Error al crear el trabajo con el trabajador");
-            response.put("error", e.getReason());
-            return new ResponseEntity<>(response, e.getStatusCode());
-        }
-
-        response.put("mensaje", "El trabajo ha sido creado con éxito");
-        response.put("trabajo", trabajoNew);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }*/
-
-    @DeleteMapping("/trabajos/{id}/eliminar")
+    @DeleteMapping("/trabajos/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete(@PathVariable String id) {
         Map<String, Object> response = new HashMap<>();
+
+        Trabajo currentTrabajo = trabajoService.findById(id);
+
+        if(currentTrabajo == null) {
+            response.put("error", true);
+            response.put("errorMessage", "El trabajo con id '" + id + "' no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
         try {
             trabajoService.delete(id);

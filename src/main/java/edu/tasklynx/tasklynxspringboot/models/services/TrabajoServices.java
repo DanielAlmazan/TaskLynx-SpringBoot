@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -24,7 +25,8 @@ public class TrabajoServices implements ITrabajoService {
     @Override
     @Transactional(readOnly = true)
     public List<Trabajo> findAll() {
-        return (List<Trabajo>) trabajoDAO.findAll();
+        return ((List<Trabajo>) trabajoDAO.findAll()).stream()
+                .sorted(Comparator.comparing(Trabajo::getCodTrabajo)).toList();
     }
 
     @Override
