@@ -44,8 +44,8 @@
 > If there is no error, redirects to the 'ready' view with a success message  
 > If there is an error, redirects to the 'trabajadores/nuevo' view with an error message
 
-![trabajadores-add-success.png](trabajadores-create-success.png)  
-![trabajadores-add-error.png](trabajadores-create-error.png)
+![trabajadores-add-success.png](trabajadores-add-success.png)  
+![trabajadores-add-error.png](trabajadores-add-error.png)
 
 ***
 
