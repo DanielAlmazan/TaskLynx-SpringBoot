@@ -105,12 +105,12 @@ Content-Type: application/json
 
 {
   "idTrabajador": "T001",
-  "dni": "12345678A",
+  "dni": "99999998C",
   "nombre": "Pepe",
   "apellidos": "Gomez",
   "especialidad": "Fontanería",
   "contraseña": "123",
-  "email": "wefwefesadf.com"
+  "email": "wefwefesadf@sadgsd.com"
 }
 
 ###
@@ -163,13 +163,13 @@ POST {{host}}/trabajadores
 Content-Type: application/json
 
 {
-  "idTrabajador": "T001",
-  "dni": "12345678A",
+  "idTrabajador": "T101",
+  "dni": "99999991C",
   "nombre": "Pepe",
   "apellidos": "García",
   "especialidad": "Fontaneria",
   "contraseña": "123",
-  "email": "wefwefewf@ergerg.com"
+  "email": "99991@ergerg.com"
 }
 
 ###
