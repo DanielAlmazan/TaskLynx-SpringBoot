@@ -54,7 +54,7 @@ GET {{host}}/trabajos/pendientes
 
   # Get /trabajos/{id}
 
-GET {{host}}/trabajos/{{id}}
+GET {{host}}/trabajos/J025
 
 ###
 
@@ -64,36 +64,32 @@ GET {{host}}/trabajos/{{id}}/trabajador
 
 ###
 
-  # Post /trabajos   –   Not da error al insertar ID existente
-  # -- FALLA --
+  # Post /trabajos
 POST {{host}}/trabajos
 Content-Type: application/json
 
 {
-  "codTrabajo": "J017",
-  "categoria": "Fontanería",
-  "descripcion": "Reparación de tuberías",
-  "fecIni": "2024-01-01",
-  "tiempo": null,
-  "idTrabajador": null,
+  "codTrabajo": "J008",
+  "categoria": "Pintura",
+  "descripcion": "Pintar las paredes",
+  "fecIni": "2024-01-09",
   "prioridad": 4
 }
 
 ###
 
   # Put /trabajos/{id}
-  # -- FALLA --
 PUT {{host}}/trabajos/{{id}}
 Content-Type: application/json
 
 {
-  "codTrabajo": "J0014",
-  "categoria": "Fontanería",
+  "codTrabajo": "J001",
+  "categoria": "Mecánica",
   "descripcion": "Reparación de tuberías",
   "fecIni": "2024-01-01",
   "tiempo": null,
   "idTrabajador": null,
-  "prioridad": 3
+  "prioridad": 2
 }
 
 ###
@@ -139,9 +135,9 @@ PUT {{host}}/trabajos/editarTiempo/{{id}}?tiempo=3
 
 ###
 
-# Delete /trabajos/{id}/eliminar
+# Delete /trabajos/{id}
 
-DELETE {{host}}/trabajos/J01/eliminar
+DELETE {{host}}/trabajos/J007
 
 ###
 
