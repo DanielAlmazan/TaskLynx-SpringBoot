@@ -69,27 +69,44 @@ public class TrabajadoresViewController {
     public ModelAndView create(@Valid Trabajador trabajador, BindingResult result, Model mod) {
         ModelAndView model = new ModelAndView();
         model.addObject("trabajador", trabajador);
+        model.addObject("editar", false);
+        addAtributes(mod);
+        model.setViewName("ready");
+
+        boolean error = false;
+
+        Trabajador currentTrabajador = trabajadorServices.findById(trabajador.getIdTrabajador());
 
         if (!result.hasErrors()) {
-            if (trabajadorServices.findById(trabajador.getIdTrabajador()) != null) {
-                model.addObject("titulo", "Error");
-                model.addObject("mensaje", "El trabajador ya existe.");
+            model.setViewName("trabajadores/trabajadoresForm");
+
+            if (currentTrabajador != null) {
+                model.addObject("titulo", "Añadir trabajador");
+                model.addObject("error", "Errores:");
+                model.addObject("mensajeError", "El trabajador con id '" + trabajador.getIdTrabajador() + "' ya existe.");
+                model.addObject("isError", true);
+                error = true;
+            }
+
+            error = dniDuplicated(trabajador, model, error);
+
+            error = emailDuplicated(trabajador, model, error);
+
+            if (error) {
                 return model;
             }
 
             model.setViewName("ready");
-            model.addObject("page", "trabajadores");
-
             trabajadorServices.save(trabajador);
             model.addObject("titulo", "Trabajador añadido");
+            model.addObject("page", "trabajadores");
             model.addObject("mensaje", "El trabajador ha sido añadido correctamente.");
         } else {
             model.setViewName("trabajadores/trabajadoresForm");
-            model.addObject("titulo", "Error");
-            model.addObject("mensaje", "Ha habido un error al añadir el trabajador.");
+            model.addObject("titulo", "Añadir trabajador");
+            model.addObject("error", "Errores: ");
         }
 
-        addAtributes(mod);
         return model;
     }
 
@@ -98,9 +115,38 @@ public class TrabajadoresViewController {
     public ModelAndView edit(@Valid Trabajador trabajador, BindingResult result, Model mod) {
         ModelAndView model = new ModelAndView();
         model.addObject("trabajador", trabajador);
+        model.addObject("editar", true);
+        addAtributes(mod);
         model.setViewName("ready");
 
+        boolean error = false;
+
+        Trabajador currentTrabajador = trabajadorServices.findById(trabajador.getIdTrabajador());
+
         if (!result.hasErrors()) {
+            model.setViewName("trabajadores/trabajadoresForm");
+
+            if (currentTrabajador == null) {
+                model.addObject("titulo", "Editar trabajador - " + trabajador.getIdTrabajador());
+                model.addObject("error", "Errores:");
+                model.addObject("mensajeError", "El trabajador con id '" + trabajador.getIdTrabajador() + "' no existe.");
+                model.addObject("isError", true);
+                error = true;
+            }
+
+            if (!trabajador.getDni().equals(currentTrabajador.getDni())) {
+                error = dniDuplicated(trabajador, model, error);
+            }
+
+            if (!trabajador.getEmail().equals(currentTrabajador.getEmail())) {
+                error = emailDuplicated(trabajador, model, error);
+            }
+
+            if (error) {
+                return model;
+            }
+
+            model.setViewName("ready");
             trabajadorServices.save(trabajador);
             model.addObject("titulo", "Trabajador actualizado");
             model.addObject("page", "trabajadores");
@@ -110,9 +156,31 @@ public class TrabajadoresViewController {
             model.addObject("titulo", "Actualizar trabajador - " + trabajador.getIdTrabajador());
             model.addObject("error", "Errores: ");
         }
-
-        addAtributes(mod);
         return model;
+    }
+
+    private boolean emailDuplicated(@Valid Trabajador trabajador, ModelAndView model, boolean error) {
+        if (trabajadorServices.existsByEmail(trabajador.getEmail())) {
+            model.addObject("titulo", "Error");
+            model.addObject("page", "trabajadores");
+            model.addObject("mensajeError3", "El email ya está en uso.");
+            model.addObject("error", "Errores: ");
+            model.addObject("isError", true);
+            error = true;
+        }
+        return error;
+    }
+
+    private boolean dniDuplicated(@Valid Trabajador trabajador, ModelAndView model, boolean error) {
+        if (trabajadorServices.existsByDni(trabajador.getDni())) {
+            model.addObject("titulo", "Error");
+            model.addObject("page", "trabajadores");
+            model.addObject("mensajeError2", "El DNI ya está en uso.");
+            model.addObject("error", "Errores: ");
+            model.addObject("isError", true);
+            error = true;
+        }
+        return error;
     }
 
     // Elimina un trabajador

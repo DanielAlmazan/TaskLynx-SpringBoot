@@ -19,19 +19,21 @@
             </ul>
         </div>
 
-        <div th:if="${mensajeError}">
+        <div class="errorblock" th:if="${isError}">
             <h2 th:text="${error}"></h2>
-            <p th:text="${mensajeError}"></p>
+            <p th:if="${mensajeError}" th:text="${mensajeError}"></p>
+            <p th:if="${mensajeError2}" th:text="${mensajeError2}"></p>
+            <p th:if="${mensajeError3}" th:text="${mensajeError3}"></p>
         </div>
 
         <fieldset>
             <legend>Datos del trabajador</legend>
 
             <label for="idTrabajador" th:text="${id}"></label>
-            <input id="idTrabajador" type="text" required th:field="*{idTrabajador}" maxlength="5" th:readonly="${editar}">
+            <input id="idTrabajador" type="text" th:field="*{idTrabajador}" maxlength="5" th:readonly="${editar}">
 
             <label for="dni" th:text="${dni}"></label>
-            <input id="dni" type="text" required th:field="*{dni}" maxlength="9">
+            <input id="dni" type="text" th:field="*{dni}" maxlength="9">
 
             <label for="nombre" th:text="${nombre}"></label>
             <input id="nombre" type="text" th:field="*{nombre}" maxlength="100">
@@ -40,10 +42,10 @@
             <input id="apellidos" type="text" th:field="*{apellidos}" maxlength="100">
 
             <label for="especialidad" th:text="${especialidad}"></label>
-            <input id="especialidad" type="text" required th:field="*{especialidad}" maxlength="50">
+            <input id="especialidad" type="text" th:field="*{especialidad}" maxlength="50">
 
             <label for="password" th:text="${contraseña}"></label>
-            <input id="password" type="password" required th:field="*{contraseña}" maxlength="50">
+            <input id="password" type="password" th:field="*{contraseña}" maxlength="50">
 
             <label for="email" th:text="${email}"></label>
             <input id="email" type="email" th:field="*{email}" maxlength="150">
