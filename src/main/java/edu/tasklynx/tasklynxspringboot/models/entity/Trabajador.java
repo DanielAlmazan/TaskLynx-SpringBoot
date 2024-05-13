@@ -1,7 +1,6 @@
 package edu.tasklynx.tasklynxspringboot.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -68,6 +67,24 @@ public class Trabajador {
             String contraseña,
             String especialidad
     ) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.especialidad = especialidad;
+        this.contraseña = contraseña;
+        this.email = email;
+    }
+
+    public Trabajador(
+            String idTrabajador,
+            String dni,
+            String nombre,
+            String apellidos,
+            String email,
+            String contraseña,
+            String especialidad
+    ) {
+        this.idTrabajador = idTrabajador;
         this.dni = dni;
         this.nombre = nombre;
         this.apellidos = apellidos;
