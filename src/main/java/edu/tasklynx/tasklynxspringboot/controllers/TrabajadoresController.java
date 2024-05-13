@@ -246,6 +246,27 @@ public class TrabajadoresController {
 
         if (showErrors(result, response, errors)) return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
+        if (trabajadorService.existsById(trabajador.getIdTrabajador())) {
+            response.put("error", true);
+            errors.add("Ya existe un trabajador con el ID: " + trabajador.getIdTrabajador());
+            response.put("errorsList", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        if (trabajadorService.existsByEmail(trabajador.getEmail())) {
+            response.put("error", true);
+            errors.add("Ya existe un trabajador con el email: " + trabajador.getEmail());
+            response.put("errorsList", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        if (trabajadorService.existsByDni(trabajador.getDni())) {
+            response.put("error", true);
+            errors.add("Ya existe un trabajador con el DNI: " + trabajador.getDni());
+            response.put("errorsList", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
         try {
             newTrabajador = trabajadorService.save(trabajador);
         } catch (DataAccessException e) {
@@ -255,10 +276,9 @@ public class TrabajadoresController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("error", false);
-        response.put("result", newTrabajador);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+            response.put("error", false);
+            response.put("result", newTrabajador);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     // Actualiza un trabajador
@@ -277,6 +297,24 @@ public class TrabajadoresController {
             errors.add("No se pudo editar, el trabajador con ID '" + id + "' no existe en la base de datos");
             response.put("errorsList", errors);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (!currentTrabajador.getDni().equals(trabajador.getDni())) {
+            if (trabajadorService.existsByDni(trabajador.getDni())) {
+                response.put("error", true);
+                errors.add("Ya existe un trabajador con el DNI: " + trabajador.getDni());
+                response.put("errorsList", errors);
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        if (!currentTrabajador.getEmail().equals(trabajador.getEmail())) {
+            if (trabajadorService.existsByEmail(trabajador.getEmail())) {
+                response.put("error", true);
+                errors.add("Ya existe un trabajador con el email: " + trabajador.getEmail());
+                response.put("errorsList", errors);
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
         }
 
         try {

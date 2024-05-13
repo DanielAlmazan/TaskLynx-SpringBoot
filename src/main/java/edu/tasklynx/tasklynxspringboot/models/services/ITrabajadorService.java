@@ -11,4 +11,7 @@ public interface ITrabajadorService {
     List<Trabajador> findBySpeciality(String speciality);
     Trabajador save(Trabajador trabajador);
     void delete(String id);
+    boolean existsById(String id);
+    boolean existsByEmail (String email);
+    boolean existsByDni (String dni);
 }

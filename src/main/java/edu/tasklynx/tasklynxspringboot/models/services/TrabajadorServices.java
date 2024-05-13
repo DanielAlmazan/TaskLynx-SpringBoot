@@ -48,4 +48,17 @@ public class TrabajadorServices implements ITrabajadorService {
     public void delete(String id) {
         trabajadorDAO.deleteById(id);
     }
+
+    @Override
+    public boolean existsById(String id) {
+        return trabajadorDAO.existsById(id);
+    }
+
+    public boolean existsByEmail(String email) {
+        return trabajadorDAO.existsByEmail(email);
+    }
+
+    public boolean existsByDni(String dni) {
+        return trabajadorDAO.existsByDni(dni);
+    }
 }
