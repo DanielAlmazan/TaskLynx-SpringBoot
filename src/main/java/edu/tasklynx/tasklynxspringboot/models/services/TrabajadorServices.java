@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -16,7 +17,8 @@ public class TrabajadorServices implements ITrabajadorService {
     @Override
     @Transactional(readOnly = true)
     public List<Trabajador> findAll() {
-        return (List<Trabajador>) trabajadorDAO.findAll();
+        return ((List<Trabajador>) trabajadorDAO.findAll()).stream()
+                .sorted(Comparator.comparing(Trabajador::getIdTrabajador)).toList();
     }
 
     @Override
@@ -27,8 +29,8 @@ public class TrabajadorServices implements ITrabajadorService {
     
     @Override
     @Transactional(readOnly = true)
-    public Trabajador findByNameAndPass(String user, String pass) {
-        return trabajadorDAO.findByNameAndPass(user, pass);
+    public Trabajador findByIdAndPass(String id, String pass) {
+        return trabajadorDAO.findByIdTrabajadorAndContraseña(id, pass);
     }
 
     @Override

@@ -4,7 +4,7 @@
 > Returns all the workers in the database.  
 > If there are no workers, it will return an empty list.
 
-### Successfull response example
+### Successful response example
 ```json
 {
   "result": [
@@ -45,7 +45,7 @@
 > Returns a worker by its ID.  
 > If the worker does not exist, it will return an error message.
 
-### Successfull response example
+### Successful response example
 ```json
 {
   "result": {
@@ -76,7 +76,7 @@
 > If there are any errors, it will return an error message with the list of errors.  
 > If the worker already exists, it will return an error message.
 
-### Successfull body example
+### Successful body example
 ```json
 {
   "idTrabajador": "T001",
@@ -89,7 +89,7 @@
 }
 ```
 
-### Successfull response example
+### Successful response example
 ```json
 {
   "result": {
@@ -144,7 +144,7 @@
 > If the worker does not exist, it will return an error message.  
 > If any of the fields are empty or invalid, it will return an error message with the list of errors.
 
-### Successfull body example
+### Successful body example
 ```json
 {
     "idTrabajador": "T001",
@@ -157,7 +157,7 @@
 }
 ```
 
-### Successfull response example
+### Successful response example
 ```json
 {
   "result": {
@@ -226,7 +226,7 @@
 > Delete a worker by its ID. Returns a response without errors.  
 > If the worker does not exist, it will return an error message.
 
-### Successfull response example
+### Successful response example
 ```json
 {
   "error": false
