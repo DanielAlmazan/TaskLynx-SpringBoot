@@ -346,6 +346,14 @@ public class TrabajadoresController {
 
         Map<String, Object> response = new HashMap<>();
 
+        Trabajador currentTrabajador = trabajadorService.findById(id);
+
+        if(currentTrabajador == null) {
+            response.put("error", true);
+            response.put("errorMessage", "El trabajador con id '" + id + "' no existe en la base de datos");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
         try {
             trabajadorService.delete(id);
         } catch (DataAccessException e) {

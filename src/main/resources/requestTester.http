@@ -79,7 +79,7 @@ Content-Type: application/json
 ###
 
   # Put /trabajos/{id}
-PUT {{host}}/trabajos/{{id}}
+PUT {{host}}/trabajos/J020
 Content-Type: application/json
 
 {

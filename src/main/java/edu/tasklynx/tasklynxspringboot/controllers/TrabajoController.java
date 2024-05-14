@@ -179,7 +179,7 @@ public class TrabajoController {
 
         if (currentTrabajo == null) {
             response.put("error", true);
-            errors.add("No se pudo editar, el trabajador con ID '" + id + "' no existe en la base de datos");
+            errors.add("No se pudo editar, el trabajo con id '" + id + "' no existe en la base de datos");
             response.put("errorsList", errors);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
