@@ -66,6 +66,25 @@ public class TrabajoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
+    @GetMapping("/trabajos/sinTrabajador")
+    public ResponseEntity<?> showSinTrabajador() {
+        List<Trabajo> trabajos;
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            trabajos = trabajoService.findTrabajosSinTrabajador();
+        } catch (DataAccessException e) {
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        response.put("error", false);
+        response.put("result", trabajos);
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
     @GetMapping("/trabajos/completados")
     public ResponseEntity<?> showCompletados() {
         List<Trabajo> trabajos;
@@ -253,7 +272,7 @@ public class TrabajoController {
     @PutMapping("/trabajos/editarFechaFin/{id}")
     public ResponseEntity<?> editarFechaFin(
             @PathVariable String id,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fec_fin
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fec_fin
     ) {
         Trabajo trabajo;
         Map<String, Object> response = new HashMap<>();
@@ -273,7 +292,7 @@ public class TrabajoController {
     }
 
     @PutMapping("/trabajos/editarTiempo/{id}")
-    public ResponseEntity<?> editarTiempo(@PathVariable String id, @RequestParam BigDecimal tiempo) {
+    public ResponseEntity<?> editarTiempo(@PathVariable String id, @RequestParam(required = false) BigDecimal tiempo) {
         Trabajo trabajo;
         Map<String, Object> response = new HashMap<>();
 

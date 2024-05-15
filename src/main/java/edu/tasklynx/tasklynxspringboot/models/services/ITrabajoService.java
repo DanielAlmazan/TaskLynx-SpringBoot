@@ -15,6 +15,7 @@ public interface ITrabajoService {
     List<Trabajo> findCompletados();
     List<Trabajo> findCompletadosPorTrabajador(String idTrabajador);
     List<Trabajo> findCompletadosPorTrabajadorEntreFechas(String idTrabajador, LocalDate startDate, LocalDate endDate);
+    List<Trabajo> findCompletadosPorTrabajadorHastaFecha(String idTrabajador, LocalDate endDate);
     List<Trabajo> findPendientesPorTrabajador(String idTrabajador);
     List<Trabajo> findPendientesPorTrabajadorOrderByPrioridadAsc(String trabajador);
     List<Trabajo> findPendientesPorTrabajadorYPrioridad(String trabajador, BigDecimal prioridad);

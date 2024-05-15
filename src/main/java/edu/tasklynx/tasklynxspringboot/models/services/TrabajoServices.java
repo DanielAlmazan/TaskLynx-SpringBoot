@@ -65,6 +65,11 @@ public class TrabajoServices implements ITrabajoService {
     }
 
     @Override
+    public List<Trabajo> findCompletadosPorTrabajadorHastaFecha(String idTrabajador, LocalDate endDate) {
+        return trabajoDAO.findByIdTrabajadorIdTrabajadorAndFecFinIsLessThanEqual(idTrabajador, endDate);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Trabajo> findPendientesPorTrabajador(String idTrabajador) {
         return trabajoDAO.findPendienteByTrabajador(idTrabajador);
@@ -94,19 +99,25 @@ public class TrabajoServices implements ITrabajoService {
     @Override
     @Transactional
     public Trabajo finalizarTrabajo(String id, LocalDate fec_fin, BigDecimal tiempo) {
-        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow();
+        Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado")
+        );
 
         if (trabajo.getIdTrabajador() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El trabajo no tiene un trabajador asignado");
         }
 
-        System.out.println(trabajo.getIdTrabajador());
-
         fec_fin = validateDate(trabajo, fec_fin);
 
         final BigDecimal tiempoMaximo = BigDecimal.valueOf(trabajo.getFecIni().until(fec_fin).getDays() * 8L);
 
-        tiempo = validateTime(tiempo, tiempoMaximo);
+        if (trabajo.getFecIni().isEqual(fec_fin)) {
+            tiempo = BigDecimal.valueOf(8L);
+        } else if (BigDecimal.ZERO.compareTo(tiempo) == 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tiempo no puede ser 0");
+        } else {
+            tiempo = validateTime(tiempo, tiempoMaximo);
+        }
 
         trabajo.setFecFin(fec_fin);
         trabajo.setTiempo(tiempo);
@@ -173,6 +184,10 @@ public class TrabajoServices implements ITrabajoService {
     public Trabajo editarTiempo(String id, BigDecimal tiempo) {
         Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado"));
 
+        if (trabajo.getFecFin() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El trabajo no tiene una fecha de finalización asignada");
+        }
+
         final BigDecimal tiempoMaximo = BigDecimal.valueOf(trabajo.getFecIni().until(trabajo.getFecFin()).getDays() * 8L);
         tiempo = validateTime(tiempo, tiempoMaximo);
 
@@ -193,8 +208,8 @@ public class TrabajoServices implements ITrabajoService {
             tiempo = tiempoMaximo;
         }
 
-        if (tiempo.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tiempo no puede ser menor o igual a 0");
+        if (tiempo.compareTo(BigDecimal.ZERO) < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tiempo no puede ser menor a 0");
         }
 
         if (tiempo.compareTo(tiempoMaximo) > 0) {
