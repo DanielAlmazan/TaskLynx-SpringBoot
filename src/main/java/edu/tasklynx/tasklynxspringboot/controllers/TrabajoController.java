@@ -66,6 +66,25 @@ public class TrabajoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
+    @GetMapping("/trabajos/sinTrabajador")
+    public ResponseEntity<?> showSinTrabajador() {
+        List<Trabajo> trabajos;
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            trabajos = trabajoService.findTrabajosSinTrabajador();
+        } catch (DataAccessException e) {
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        response.put("error", false);
+        response.put("result", trabajos);
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
     @GetMapping("/trabajos/completados")
     public ResponseEntity<?> showCompletados() {
         List<Trabajo> trabajos;
