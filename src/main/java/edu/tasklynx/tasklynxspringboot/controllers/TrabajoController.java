@@ -272,7 +272,7 @@ public class TrabajoController {
     @PutMapping("/trabajos/editarFechaFin/{id}")
     public ResponseEntity<?> editarFechaFin(
             @PathVariable String id,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fec_fin
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fec_fin
     ) {
         Trabajo trabajo;
         Map<String, Object> response = new HashMap<>();
@@ -292,7 +292,7 @@ public class TrabajoController {
     }
 
     @PutMapping("/trabajos/editarTiempo/{id}")
-    public ResponseEntity<?> editarTiempo(@PathVariable String id, @RequestParam BigDecimal tiempo) {
+    public ResponseEntity<?> editarTiempo(@PathVariable String id, @RequestParam(required = false) BigDecimal tiempo) {
         Trabajo trabajo;
         Map<String, Object> response = new HashMap<>();
 
