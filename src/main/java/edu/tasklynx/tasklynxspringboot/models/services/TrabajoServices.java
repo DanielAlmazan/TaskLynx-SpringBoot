@@ -184,6 +184,10 @@ public class TrabajoServices implements ITrabajoService {
     public Trabajo editarTiempo(String id, BigDecimal tiempo) {
         Trabajo trabajo = trabajoDAO.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trabajo no encontrado"));
 
+        if (trabajo.getFecFin() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El trabajo no tiene una fecha de finalización asignada");
+        }
+
         final BigDecimal tiempoMaximo = BigDecimal.valueOf(trabajo.getFecIni().until(trabajo.getFecFin()).getDays() * 8L);
         tiempo = validateTime(tiempo, tiempoMaximo);
 
