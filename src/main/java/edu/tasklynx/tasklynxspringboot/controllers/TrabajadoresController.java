@@ -133,7 +133,20 @@ public class TrabajadoresController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajos = trabajadorService.findById(id).getTrabajos().stream().toList();
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+            Trabajador trabajador = trabajadorService.findById(id);
+            if (trabajador == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            
+            trabajos = trabajador.getTrabajos().stream().toList();
         } catch (DataAccessException e) {
             response.put("error", true);
             response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
@@ -153,6 +166,12 @@ public class TrabajadoresController {
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
             trabajosPendientes = trabajoService.findPendientesPorTrabajador(id);
         } catch (DataAccessException e) {
             response.put("error", true);
@@ -172,6 +191,12 @@ public class TrabajadoresController {
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            
             trabajosPendientes = trabajoService.findPendientesPorTrabajadorOrderByPrioridadAsc(id);
         } catch (DataAccessException e) {
             response.put("error", true);
@@ -191,6 +216,12 @@ public class TrabajadoresController {
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
             trabajosPendientes = trabajoService.findPendientesPorTrabajadorYPrioridad(id, prioridad);
         } catch (DataAccessException e) {
             response.put("error", true);
@@ -222,7 +253,13 @@ public class TrabajadoresController {
         }
 
         try {
-            if (fechaIni == null && fechaFin != null) {
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+            if (fechaIni == null && fechaFin == null) {
                 trabajosCompletados = trabajoService.findCompletadosPorTrabajador(id);
             } else {
                 trabajosCompletados = trabajoService.findCompletadosPorTrabajadorEntreFechas(id, fechaIni, fechaFin);
