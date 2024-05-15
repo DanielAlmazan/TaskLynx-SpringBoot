@@ -248,10 +248,6 @@ public class TrabajadoresController {
         List<Trabajo> trabajosCompletados;
         Map<String, Object> response = new HashMap<>();
 
-        if (fechaIni != null && fechaFin == null) {
-            fechaFin = LocalDate.now();
-        }
-
         try {
             if (trabajadorService.findById(id) == null) {
                 response.put("error", true);
@@ -261,6 +257,10 @@ public class TrabajadoresController {
 
             if (fechaIni == null && fechaFin == null) {
                 trabajosCompletados = trabajoService.findCompletadosPorTrabajador(id);
+            } else if (fechaIni != null & fechaFin == null) {
+                trabajosCompletados = trabajoService.findCompletadosPorTrabajadorEntreFechas(id, fechaIni, LocalDate.now());
+            } else if(fechaIni == null) {
+                trabajosCompletados = trabajoService.findCompletadosPorTrabajadorHastaFecha(id, fechaFin);
             } else {
                 trabajosCompletados = trabajoService.findCompletadosPorTrabajadorEntreFechas(id, fechaIni, fechaFin);
             }
