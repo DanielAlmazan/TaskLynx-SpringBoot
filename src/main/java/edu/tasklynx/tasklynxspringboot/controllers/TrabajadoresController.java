@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -78,13 +77,19 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Devuelve un trabajador por id y contraseña
+    // Devuelve los trabajos pendientes buscando un usuario por ID y contraseña
     @GetMapping("/trabajadores/{id}/{contraseña}")
     public ResponseEntity<?> indexOneByIdAndContraseña(@PathVariable String id, @PathVariable String contraseña) {
         Trabajador trabajador;
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (trabajadorService.findById(id) == null) {
+                response.put("error", true);
+                response.put("errorMessage", "El trabajador con ID: '" + id + "' no existe en la base de datos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            
             trabajador = trabajadorService.findByIdAndPass(id, contraseña);
         } catch (DataAccessException e) {
             response.put("error", true);
@@ -98,10 +103,7 @@ public class TrabajadoresController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        response.put("error", false);
-        response.put("result", trabajador);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return indexOneTrabajosPendientes(id);
     }
 
     // Devuelve una lista de trabajadores por especialidad
