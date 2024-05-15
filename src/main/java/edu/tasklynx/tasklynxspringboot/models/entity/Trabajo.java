@@ -1,7 +1,5 @@
 package edu.tasklynx.tasklynxspringboot.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -15,8 +13,6 @@ import java.time.LocalDate;
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NOT NULL"),
         @NamedQuery(name = "Trabajo.findPendienteByTrabajador",
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL"),
-        @NamedQuery(name = "Trabajo.findByIdAndUnassigned",
-                query = "SELECT t FROM Trabajo t WHERE t.codTrabajo = :codTrabajo AND t.idTrabajador IS NULL"),
         @NamedQuery(name = "Trabajo.findCompletadosPorTrabajadorEntreFechas",
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin BETWEEN :startDate AND :endDate"),
         @NamedQuery(name = "Trabajo.findPendingByTrabajadorOrderByPrioridad",
