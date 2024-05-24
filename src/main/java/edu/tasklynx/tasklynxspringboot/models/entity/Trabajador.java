@@ -13,7 +13,9 @@ import java.util.Set;
 @Table(name = "trabajador")
 @NamedQueries({
         @NamedQuery(name = "Trabajador.findByNameAndPass", 
-                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña")
+                query = "SELECT t FROM Trabajador t WHERE t.nombre = :nombre AND t.contraseña = :contraseña"),
+        @NamedQuery(name = "Trabajador.findWithoutPendingTasks",
+                query = "SELECT t FROM Trabajador t WHERE NOT EXISTS (SELECT 1 FROM Trabajo tr WHERE tr.idTrabajador = t AND tr.fecFin IS NULL)")
 })
 @NamedNativeQuery(name = "Trabajador.findBySpeciality",
         query = "SELECT * FROM Trabajador t WHERE unaccent(t.especialidad) ilike :especialidad",

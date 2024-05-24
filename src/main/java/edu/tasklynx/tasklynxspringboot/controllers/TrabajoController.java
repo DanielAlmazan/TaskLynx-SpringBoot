@@ -86,12 +86,21 @@ public class TrabajoController {
     }
     
     @GetMapping("/trabajos/completados")
-    public ResponseEntity<?> showCompletados() {
+    public ResponseEntity<?> showCompletados(
+            @RequestParam (required = false) @DateTimeFormat()
+            LocalDate fechaIni,
+            @RequestParam (required = false) @DateTimeFormat()
+            LocalDate fechaFin
+    ) {
         List<Trabajo> trabajos;
         Map<String, Object> response = new HashMap<>();
 
         try {
-            trabajos = trabajoService.findCompletados();
+            if (fechaIni != null && fechaFin != null) {
+                trabajos = trabajoService.findCompletadosEntreFechas(fechaIni, fechaFin);
+            } else {
+                trabajos = trabajoService.findCompletados();
+            }
         } catch (DataAccessException e) {
             response.put("error", true);
             response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());

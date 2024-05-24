@@ -10,6 +10,7 @@ public interface ITrabajadorService {
     Trabajador findByIdAndPass(String id, String pass);
     List<Trabajador> findBySpeciality(String speciality);
     Trabajador save(Trabajador trabajador);
+    List<Trabajador> findWithoutPendingTasks();
     void delete(String id);
     boolean existsById(String id);
     boolean existsByEmail (String email);

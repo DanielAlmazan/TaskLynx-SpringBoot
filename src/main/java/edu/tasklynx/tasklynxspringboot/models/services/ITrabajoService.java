@@ -13,6 +13,7 @@ public interface ITrabajoService {
     List<Trabajo> findTrabajosSinTrabajador();
     List<Trabajo> findPendientes();
     List<Trabajo> findCompletados();
+    List<Trabajo> findCompletadosEntreFechas(LocalDate startDate, LocalDate endDate);
     List<Trabajo> findCompletadosPorTrabajador(String idTrabajador);
     List<Trabajo> findCompletadosPorTrabajadorEntreFechas(String idTrabajador, LocalDate startDate, LocalDate endDate);
     List<Trabajo> findCompletadosPorTrabajadorHastaFecha(String idTrabajador, LocalDate endDate);
