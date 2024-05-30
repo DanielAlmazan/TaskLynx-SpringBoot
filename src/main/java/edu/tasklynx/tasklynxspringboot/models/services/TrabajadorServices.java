@@ -51,6 +51,10 @@ public class TrabajadorServices implements ITrabajadorService {
         trabajadorDAO.deleteById(id);
     }
 
+    public List<Trabajador> findWithoutPendingTasks() {
+        return trabajadorDAO.findWithoutPendingTasks();
+    }
+
     @Override
     public boolean existsById(String id) {
         return trabajadorDAO.existsById(id);

@@ -19,6 +19,7 @@ public interface ITrabajoDAO extends CrudRepository<Trabajo, String> {
     Trabajador findTrabajadorByCodTrabajo(@Param("codTrabajo") String codTrabajo);
     List<Trabajo> findCompletadosPorTrabajadorEntreFechas(@Param("idTrabajador") String idTrabajador, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     List<Trabajo> findByIdTrabajadorIdTrabajadorAndFecFinIsLessThanEqual(@Param("idTrabajador") String id, @Param("fec_ini") LocalDate fecFin);
+    List<Trabajo> findCompletadosPorFecha(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
     List<Trabajo> findByIdTrabajadorIsNull();
     List<Trabajo> findByFecFinIsNull();
     List<Trabajo> findByFecFinIsNotNull();

@@ -235,6 +235,25 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/trabajadores/sintrabajospendientes")
+    public ResponseEntity<?> indexTrabajadoresSinTrabajosPendientes() {
+        List<Trabajador> trabajadores;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            trabajadores = trabajadorService.findWithoutPendingTasks();
+        } catch (DataAccessException e) {
+            response.put("error", true);
+            response.put("errorMessage", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("error", false);
+        response.put("result", trabajadores);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // Devuelve los trabajos completados de un trabajador
     @GetMapping("/trabajadores/{id}/trabajos/completados")
     public ResponseEntity<?> indexOneTrabajosCompletadosEntreFechas(

@@ -54,6 +54,11 @@ public class TrabajoServices implements ITrabajoService {
     }
 
     @Override
+    public List<Trabajo> findCompletadosEntreFechas(LocalDate startDate, LocalDate endDate) {
+        return trabajoDAO.findCompletadosPorFecha(startDate, endDate);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Trabajo> findCompletadosPorTrabajador(String idTrabajador) {
         return trabajoDAO.findCompletaByTrabajador(idTrabajador);

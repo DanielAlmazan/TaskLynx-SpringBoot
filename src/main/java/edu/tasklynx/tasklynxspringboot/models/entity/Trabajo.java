@@ -21,6 +21,8 @@ import java.time.LocalDate;
                 query = "SELECT t FROM Trabajo t WHERE t.idTrabajador.idTrabajador = :idTrabajador AND t.fecFin IS NULL AND t.prioridad = :prioridad"),
         @NamedQuery(name = "Trabajo.findTrabajadorByCodTrabajo",
                 query = "SELECT t.idTrabajador FROM Trabajo t WHERE t.codTrabajo = :codTrabajo"),
+        @NamedQuery(name= "Trabajo.findCompletadosPorFecha",
+                query = "SELECT t FROM Trabajo t WHERE t.fecFin BETWEEN :startDate AND :endDate")
 })
 public class Trabajo {
     @Id

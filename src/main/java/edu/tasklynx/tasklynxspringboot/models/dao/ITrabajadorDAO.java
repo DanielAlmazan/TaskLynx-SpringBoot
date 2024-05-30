@@ -9,6 +9,7 @@ import java.util.List;
 public interface ITrabajadorDAO extends CrudRepository<Trabajador, String> {
     Trabajador findByIdTrabajadorAndContraseña(@Param("id") String id, @Param("contraseña") String pass);
     List<Trabajador> findBySpeciality(@Param("especialidad") String especialidad);
+    List<Trabajador> findWithoutPendingTasks();
     boolean existsByEmail(@Param("email") String email);
     boolean existsByDni(@Param("dni") String dni);
     boolean existsById(@Param("id") String id);
