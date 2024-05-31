@@ -96,7 +96,16 @@ Content-Type: application/json
   "categoria": "Fontanería",
   "descripcion": "Arreglar las tuberías del baño",
   "fecIni": "2024-01-09",
-  "prioridad": 2
+  "prioridad": 2,
+  "idTrabajador": {
+    "idTrabajador": "T003",
+    "dni": "34567890C",
+    "nombre": "Carlos",
+    "apellidos": "Martínez",
+    "especialidad": "Electricidad",
+    "contraseña": "contraseña3",
+    "email": "carlos.martinez@example.com"
+  }
 }
 
 ###
@@ -139,7 +148,7 @@ PUT {{host}}/trabajos/asignar/{{codTrabajo}}/{{idNewTrabajador}}
 
 ###
 
-  # Put /trabajos/finalizar/{id}
+# Put /trabajos/finalizar/{id}
 
 PUT {{host}}/trabajos/finalizar/{{codTrabajo}}?fec_fin=2024-01-04&tiempo=2
 
