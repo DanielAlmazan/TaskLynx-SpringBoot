@@ -1,23 +1,24 @@
-# File for testing the API 
+# File for testing the API
 
 # Variables
 ### SSL @port = 8443
 ### SSL @host = https://localhost:{{port}}/api
 @port = 8080
 @host = http://localhost:{{port}}/api
-@idTrabajador2 = T002
-@idTrabajador21 = T0021
-@id = J001
+@idNewTrabajador = T800
+@idTrabajador = T002
+@codNewTrabajo = J800
+@codTrabajo = J001
 
 ###
 
-  # Get /trabajos
+# Get /trabajos
 
 GET {{host}}/trabajos
 
 ###
 
-# Get  /trabajos/sinTrabajador
+# Get /trabajos/sinTrabajador
 
 GET {{host}}/trabajos/sinTrabajador
 
@@ -25,13 +26,35 @@ GET {{host}}/trabajos/sinTrabajador
 
 # Get /trabajadores/{id}/trabajos/pendientes/prioridad
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/prioridad
+GET {{host}}/trabajadores/{{idTrabajador}}/trabajos/pendientes/prioridad
 
 ###
 
 # Get /trabajadores/{id}
 
-GET {{host}}/trabajadores/{{idTrabajador2}}
+GET {{host}}/trabajadores/{{idNewTrabajador}}
+
+###
+
+# Post /trabajadores
+POST {{host}}/trabajadores
+Content-Type: application/json
+
+{
+  "idTrabajador": "{{idNewTrabajador}}",
+  "dni": "88888888T",
+  "nombre": "Arnaldo",
+  "apellidos": "Charchenaguer",
+  "especialidad": "Espacio-Temporal",
+  "contraseña": "dame tu ropa",
+  "email": "sayonara@volvere.com"
+}
+
+###
+
+# Get /trabajadores/{id}
+
+GET {{host}}/trabajadores/{{idNewTrabajador}}
 
 ###
 
@@ -54,13 +77,13 @@ GET {{host}}/trabajos/pendientes
 
   # Get /trabajos/{id}
 
-GET {{host}}/trabajos/J025
+GET {{host}}/trabajos/{{codNewTrabajo}}
 
 ###
 
 # Get /trabajos/{id}/trabajador
 
-GET {{host}}/trabajos/{{id}}/trabajador
+GET {{host}}/trabajos/{{codTrabajo}}/trabajador
 
 ###
 
@@ -121,25 +144,25 @@ Content-Type: application/json
 
 # Put /trabajos/asignar/{codTrabajo}/{idTrabajador}
 
-PUT {{host}}/trabajos/asignar/{{id}}/{{idTrabajador2}}
+PUT {{host}}/trabajos/asignar/{{codTrabajo}}/{{idNewTrabajador}}
 
 ###
 
-  # Put /trabajos/finalizar/{id}
+# Put /trabajos/finalizar/{id}
 
-PUT {{host}}/trabajos/finalizar/J002?fec_fin=2024-05-30&tiempo=2
+PUT {{host}}/trabajos/finalizar/{{codTrabajo}}?fec_fin=2024-01-04&tiempo=2
 
 ###
 
 # Put /trabajos/editarFechaFin/{id}
 
-PUT {{host}}/trabajos/editarFechaFin/{{id}}?fec_fin=2024-01-05
+PUT {{host}}/trabajos/editarFechaFin/{{codTrabajo}}?fec_fin=2024-01-05
 
 ###
 
 # Put /trabajos/editarTiempo/{id}
 
-PUT {{host}}/trabajos/editarTiempo/{{id}}?tiempo=3
+PUT {{host}}/trabajos/editarTiempo/{{codTrabajo}}?tiempo=3
 
 ###
 
@@ -179,31 +202,31 @@ Content-Type: application/json
 
 # List every task of a worker
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos
+GET {{host}}/trabajadores/{{idNewTrabajador}}/trabajos
 
 ###
 
 # Get /trabajadores/{id}/trabajos/pendientes/{prioridad}
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes/2
+GET {{host}}/trabajadores/{{idNewTrabajador}}/trabajos/pendientes/2
 
 ###
 
 # Get /trabajadores/{id}/trabajos/completados?fechaIni={fechaIni}&fechaFin={fechaFin}
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/completados?fechaIni=2024-01-01&fechaFin=2024-03-02
+GET {{host}}/trabajadores/{{idNewTrabajador}}/trabajos/completados?fechaIni=2024-01-01&fechaFin=2024-03-02
 
 ###
 
 # List every completed task of a worker
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/completados
+GET {{host}}/trabajadores/{{idNewTrabajador}}/trabajos/completados
 
 ###
 
 # List every pending task of a worker
 
-GET {{host}}/trabajadores/{{idTrabajador2}}/trabajos/pendientes
+GET {{host}}/trabajadores/{{idNewTrabajador}}/trabajos/pendientes
 
 
 
