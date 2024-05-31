@@ -397,6 +397,30 @@ public class TrabajadoresController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // Actualiza la contraseña de un trabajador
+    @PutMapping("/trabajadores/{id}/password/{password}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> updatePassword(@PathVariable String id, @PathVariable String password) {
+        Trabajador currentTrabajador = trabajadorService.findById(id);
+        Map<String, Object> response = new HashMap<>();
+
+        if (currentTrabajador == null) {
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            currentTrabajador.setContraseña(password);
+            trabajadorService.save(currentTrabajador);
+        } catch (DataAccessException e) {
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response.put("error", false);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // Elimina un trabajador
     @DeleteMapping("/trabajadores/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
