@@ -26,14 +26,21 @@ CREATE TABLE IF NOT EXISTS trabajo
 );
 
 INSERT INTO trabajador (id_trabajador, dni, nombre, apellidos, especialidad, "contraseña", email)
-VALUES ('T001', '12345678A', 'Juan', 'Pérez', 'Carpintería', 'contraseña1', 'juan.perez@example.com'),
-       ('T002', '23456789B', 'Ana', 'Gómez', 'Fontanería', 'contraseña2', 'ana.gomez@example.com'),
-       ('T003', '34567890C', 'Carlos', 'Martínez', 'Electricidad', 'contraseña3', 'carlos.martinez@example.com');
+VALUES ('T001', '12345678A', 'Juan', 'Pérez', 'Carpintería', 'c1', 'juan.perez@example.com'),
+       ('T002', '23456789B', 'Anaclet', 'Agent Secret', 'Electricidad', 'c2', 'anaclet.secret@example.com'),
+       ('T003', '23456789A', 'Margaret', 'Agent Secret', 'Electricidad', 'c3', 'margaret.agent@example.com'),
+       ('T004', '23456789M', 'Ana', 'Gómez', 'Fontanería', 'c4', 'ana.gomez@example.com'),
+       ('T005', '34567890C', 'Carlos', 'Martínez', 'Pintura', 'c5', 'carlos.martinez@example.com'),
+       ('TDUDE', '34567890T', 'Dude', 'The', 'None', 'Donnie', 'white.russian@example.com');
 
 INSERT INTO trabajo (cod_trabajo, categoria, descripcion, fec_ini, fec_fin, tiempo, id_trabajador, prioridad)
-VALUES ('J001', 'Carpintería', 'Construcción de armario', '2022-01-01', NULL, 10.0, 'T001', 1),
-       ('J002', 'Fontanería', 'Reparación de tuberías', '2022-01-02', NULL, 5.0, 'T002', 2),
-       ('J003', 'Electricidad', 'Instalación de luces', '2022-01-03', NULL, 8.0, 'T003', 3);
+VALUES ('J001', 'Carpintería', 'Construcción de armario', '2024-05-01', NULL, NULL, 'T001', 1),
+       ('J002', 'Electricidad', 'Instalación de luces', '2024-05-02', NULL, NULL, 'T002', 2),
+       ('J003', 'Electricidad', 'Desinstalación de luces', '2024-05-02', NULL, NULL, 'T003', 2),
+       ('J004', 'Fontanería', 'Desatascar tuberías', '2024-05-02', NULL, NULL, 'T004', 2),
+       ('J005', 'Pintura', 'Pintar la mona', '2024-05-03', NULL, NULL, 'T005', 3),
+       ('J006', 'Electricidad', 'Enchufar enchufes', '2024-05-02', NULL, NULL, 'T002', 1),
+       ('J007', 'Desarrollo', 'Desarrollar sueños', '2025-05-02', NULL, NULL, NULL, 4);
 
 
 CREATE EXTENSION IF NOT EXISTS unaccent;
